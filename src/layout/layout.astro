@@ -23,5 +23,15 @@ const { title = 'Astro minial blog', showNav = true } = Astro.props
 		>
 			<slot />
 		</main>
+		<script>
+			import { syntaxHighlighting } from '@lib/mdx/syntax-highlighting'
+			syntaxHighlighting()
+			document.addEventListener('astro:after-swap', syntaxHighlighting)
+		</script>
 	</body>
 </html>
+
+<style>
+	.shiky {
+	}
+</style>
