@@ -46,6 +46,14 @@ This project is deployed on [Vercel](https://vercel.com). Continuous deployment 
 3. Configure environment variables as needed.
 4. Start the development server with `npm run dev`.
 
+
+## TODO
+- [ ] Syntax highlighting 
+- [ ] Search post
+- [ ] Comments
+- [ ] Form Errors
+- [ ] UI
+      
 ## License
 
 This project is licensed under the MIT License.
