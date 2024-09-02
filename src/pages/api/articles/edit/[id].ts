@@ -1,5 +1,4 @@
 import type { Article } from "@lib/article/types"
-import type { LocalUser } from "@lib/core/types"
 import type { APIContext } from "astro"
 
 export async function POST(context: APIContext): Promise<Response> {
@@ -26,7 +25,7 @@ export async function POST(context: APIContext): Promise<Response> {
 
 	actionManager.setContext({ ...actionManager.getContext(), article })
 
-	const result = await actionManager.execute("article.edit", {
+	await actionManager.execute("article.edit", {
 		article: {
 			id: id as string,
 			title: title as string,

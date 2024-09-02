@@ -1,11 +1,11 @@
-import type { Article as LocalArticle, ArticleAction, ArticleContext, ArticleParams } from "../types"
+import type { Article as LocalArticle, ArticleAction, ArticleParams } from "../types"
 import { db, Article, eq, User } from "astro:db"
 
 export const getArticle: ArticleAction = {
 	id: "article.get",
 	name: "Get article",
 	policies: [],
-	exec: async (params): Promise<LocalArticle> => {
+	exec: async (params: ArticleParams): Promise<LocalArticle> => {
 		if (!params.article.id) throw new Error("Article id is required")
 		const article = await db
 			.select()

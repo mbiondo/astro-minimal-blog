@@ -6,13 +6,14 @@ interface Props {
 	title?: string
 	showNav?: boolean
 }
-const { title = "Astro", showNav = true } = Astro.props
+const { title = "Astro minial blog", showNav = true } = Astro.props
 ---
 
 <html lang='en'>
 	<head>
 		<meta charset='utf-8' />
 		<meta name='viewport' content='width=device-width' />
+		<title>{title}</title>
 		<ViewTransitions />
 	</head>
 	<body>

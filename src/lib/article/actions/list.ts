@@ -1,4 +1,4 @@
-import type { Article as LocalArticle, ArticleAction, ArticleContext, ArticleParams } from "../types"
+import type { Article as LocalArticle, ArticleAction } from "../types"
 import { db, Article, User, eq } from "astro:db"
 
 export const listArticle: ArticleAction = {

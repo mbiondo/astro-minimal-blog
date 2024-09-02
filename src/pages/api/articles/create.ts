@@ -33,5 +33,11 @@ export async function POST(context: APIContext): Promise<Response> {
 		},
 	})
 
+	if (!result) {
+		return new Response(null, {
+			status: 500,
+		})
+	}
+
 	return context.redirect("/")
 }
