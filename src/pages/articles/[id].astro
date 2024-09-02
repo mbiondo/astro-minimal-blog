@@ -1,0 +1,41 @@
+---
+import Layout from "@layout/layout.astro"
+import type { Article } from "@lib/article/types"
+import { Markdown } from "astro-remote"
+
+const { id } = Astro.params
+
+const actionManager = Astro.locals.actionManager
+
+const article: Article = await actionManager.execute("article.get", { article: { id } })
+
+actionManager.setContext({ ...actionManager.getContext(), article })
+---
+
+<Layout title={article.title}>
+	<article class='prose prose-lg max-w-7xl'>
+		{
+			article.id ? (
+				<Markdown
+					content={article.content}
+					sanitize={{
+						dropElements: ["head", "style"],
+						blockElements: ["html", "body", "div", "code"],
+					}}
+				/>
+			) : (
+				<p>Article not found</p>
+			)
+		}
+		<div class='flex flex-row gap-5 place-content-end'>
+			{
+				actionManager.canExecute("article.edit") && (
+					<a class='btn btn-warning' href={`/articles/edit/${article.id}`}>
+						Edit
+					</a>
+				)
+			}
+			<a class='btn btn-secondary' href='/'>Back</a>
+		</div>
+	</article>
+</Layout>

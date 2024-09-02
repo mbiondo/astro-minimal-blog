@@ -1,0 +1,17 @@
+---
+import type { Article } from "@lib/article/types"
+import ArticleItem from "@components/list/article.item.astro"
+
+interface Props {
+	articles: Article[]
+}
+
+const { articles } = Astro.props
+---
+
+<div class='flex flex-col max-w-7xl'>
+	{articles.map((article) => (
+		<ArticleItem article={article} />
+		<div class="divider"></div>
+	))}
+</div>

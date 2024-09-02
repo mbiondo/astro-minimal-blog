@@ -1,16 +1,15 @@
 ---
+import Layout from "@layout/layout.astro"
+import ArticleForm from "@components/forms/article.astro"
+import ArticleList from "@components/list/article.astro"
+import type { Article } from "@lib/article/types"
 
+const actionManager = Astro.locals.actionManager
+
+const articles: Article[] = await actionManager.execute("article.list", {})
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title='Dashboard'>
+	<ArticleList articles={articles} />
+	{actionManager.canExecute("article.create") && <ArticleForm />}
+</Layout>

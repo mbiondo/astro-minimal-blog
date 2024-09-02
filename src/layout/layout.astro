@@ -1,0 +1,24 @@
+---
+import ViewTransitions from "astro/components/ViewTransitions.astro"
+import Nav from "../components/navbar/nav.astro"
+
+interface Props {
+	title?: string
+	showNav?: boolean
+}
+const { title = "Astro", showNav = true } = Astro.props
+---
+
+<html lang='en'>
+	<head>
+		<meta charset='utf-8' />
+		<meta name='viewport' content='width=device-width' />
+		<ViewTransitions />
+	</head>
+	<body>
+		{showNav && <Nav />}
+		<main class='container p-4 pt-20 text-skin-base pb-32 min-h-full relative mx-auto max-w-7xl gap-5 flex flex-col'>
+			<slot />
+		</main>
+	</body>
+</html>
