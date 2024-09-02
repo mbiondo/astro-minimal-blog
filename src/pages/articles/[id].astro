@@ -18,9 +18,9 @@ actionManager.setContext({ ...actionManager.getContext(), article })
 			article.id ? (
 				<Markdown
 					content={article.content}
+					
 					sanitize={{
-						dropElements: ["head", "style"],
-						blockElements: ["html", "body", "div", "code"],
+						allowComments: true,
 					}}
 				/>
 			) : (
