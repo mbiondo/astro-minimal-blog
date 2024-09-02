@@ -1,47 +1,51 @@
-# Astro Starter Kit: Minimal
+# Astro Minimal Blog
 
-```sh
-npm create astro@latest -- --template minimal
-```
+This repository is a minimalistic blog built with [Astro](https://astro.build), leveraging Astro DB, Lucia Auth, and the actions-manager library. It is deployed on Vercel for seamless hosting.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/minimal)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/minimal)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/minimal/devcontainer.json)
+## Features
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+- **Astro**: Static site generation with ease.
+- **Astro DB**: Lightweight, integrated database solution.
+- **Lucia Auth**: Secure and flexible authentication.
+- **Actions-Manager**: Manages user actions based on context.
+- **Vercel Deployment**: Quick and efficient deployment platform.
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
+## Project Structure
 ```text
 /
+├── db/
 ├── public/
 ├── src/
+│   ├── components/
 │   └── pages/
-│       └── index.astro
 └── package.json
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+- **db/**: Database-related files.
+- **public/**: Static assets.
+- **src/**: Source code, including pages and components.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## Commands
 
-Any static assets, like images, can be placed in the `public/` directory.
+Run these commands from the project root:
 
-## 🧞 Commands
+- `npm install`: Install dependencies.
+- `npm run dev`: Start the local development server.
+- `npm run build`: Build the project for production.
+- `npm run preview`: Preview the built site.
+- `npm run astro ...`: Access Astro CLI commands.
 
-All commands are run from the root of the project, from a terminal:
+## Deployment
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+This project is deployed on [Vercel](https://vercel.com). Continuous deployment is configured via GitHub integration.
 
-## 👀 Want to learn more?
+## Getting Started
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+1. Clone the repository.
+2. Install dependencies using `npm install`.
+3. Configure environment variables as needed.
+4. Start the development server with `npm run dev`.
+
+## License
+
+This project is licensed under the MIT License.
