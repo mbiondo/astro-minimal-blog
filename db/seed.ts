@@ -1,4 +1,4 @@
-import { db, User } from 'astro:db'
+import { db, User, Article } from 'astro:db'
 import { generateId } from 'lucia'
 import { Argon2id } from 'oslo/password'
 
@@ -29,6 +29,26 @@ export default async function seed() {
       hashed_password: await new Argon2id().hash(ADMIN_PASSWORD),
       role: 'admin',
       confirmed: true,
+    },
+  ])
+
+  await db.insert(Article).values([
+    {
+      id: generateId(15),
+      authorId: userId,
+      title: 'Welcome to Astro',
+      content: `
+        ### Welcome to Astro
+        This is a sample article to help you get started with Astro.
+
+        ## Getting Started
+        To get started with Astro, you can use the following commands:
+
+        \`\`\`sh
+        npm install
+        npm run dev
+        \`\`\`
+      `,
     },
   ])
 
