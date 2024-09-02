@@ -1,6 +1,6 @@
 ---
-import type { Article } from "@lib/article/types"
-import { Markdown } from "astro-remote"
+import type { Article } from '@lib/article/types'
+import { Markdown } from 'astro-remote'
 
 interface Props {
 	article: Article
@@ -14,14 +14,14 @@ actionManager.setContext({ ...actionManager.getContext(), article })
 ---
 
 <article class='prose prose-lg max-w-7xl flex flex-col'>
-	<Markdown content={article.content.substring(0, 500) + (article.content.length > 500 ? "..." : "")} />
+	<Markdown content={article.content.substring(0, 500) + (article.content.length > 500 ? '...' : '')} />
 	<div class='flex
 			flex-row
 			gap-5
 			place-content-end'>
 		<a class='btn btn-primary' href={`/articles/${article.id}`}>Read more</a>
 		{
-			actionManager.canExecute("article.edit") && (
+			actionManager.canExecute('article.edit') && (
 				<a class='btn btn-warning' href={`/articles/edit/${article.id}`}>
 					Edit
 				</a>

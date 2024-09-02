@@ -1,12 +1,12 @@
 ---
-import Layout from "@layout/layout.astro"
-import type { Article } from "@lib/article/types"
-import ArticleForm from "@components/forms/article.astro"
+import Layout from '@layout/layout.astro'
+import type { Article } from '@lib/article/types'
+import ArticleForm from '@components/forms/article.astro'
 
 const { id } = Astro.params
 const actionManager = Astro.locals.actionManager
 
-const article: Article = await actionManager.execute("article.get", { article: { id } })
+const article: Article = await actionManager.execute('article.get', { article: { id } })
 ---
 
 <Layout title={article.title}>
