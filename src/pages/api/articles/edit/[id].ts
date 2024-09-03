@@ -16,9 +16,10 @@ export async function POST(context: APIContext): Promise<Response> {
   const actionManager = context.locals.actionManager
 
   if (!actionManager) {
-    return new Response(null, {
-      status: 500,
-    })
+    context.locals.formErrors = {
+      application: 'Error loading application',
+    }
+    return context.rewrite(`/articles/${id}/edit`)
   }
 
   const article: Article = await actionManager.execute('article.get', { article: { id } })

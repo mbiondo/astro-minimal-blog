@@ -14,7 +14,7 @@ const user = Astro.locals.user
 			{
 				user ? (
 					<>
-						<form method='post' action='/api/logout'>
+						<form method='post' action='/api/auth/logout'>
 							<button class='text-sm font-semibold leading-6'>
 								Logout <span aria-hidden='true'>&rarr;</span>
 							</button>

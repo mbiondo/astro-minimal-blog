@@ -8,7 +8,7 @@ const actionManager = Astro.locals.actionManager
 const articles: Article[] = await actionManager.execute('article.list', {})
 ---
 
-<Layout title='Dashboard'>
+<Layout title='Astro minimal blog'>
 	<section>
 		<ArticleList articles={articles} />
 	</section>

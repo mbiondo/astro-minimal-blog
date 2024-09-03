@@ -3,40 +3,42 @@ import type { APIContext } from 'astro'
 
 export async function POST(context: APIContext): Promise<Response> {
   if (!context.locals.session) {
-    return new Response(null, {
-      status: 401,
-    })
+    return context.redirect('/auth/login')
   }
 
   const formData = await context.request.clone().formData()
-  const title = formData.get('title')
-  const content = formData.get('content')
+  const title = formData.get('title') as string
+  const content = formData.get('content') as string
   const authorId = (context.locals.user as LocalUser).id
   const actionManager = context.locals.actionManager
 
-  if (!actionManager) {
-    return new Response(null, {
-      status: 500,
-    })
+  context.locals.formErrors = {}
+  context.locals.formValues = {
+    title,
+    content,
   }
 
-  if (!actionManager.canExecute('article.create'))
-    return new Response(null, {
-      status: 403,
-    })
+  if (!actionManager) {
+    context.locals.formErrors.application = 'Error loading application'
+    return context.rewrite('/articles/new')
+  }
+
+  if (!actionManager.canExecute('article.create')) {
+    context.locals.formErrors.application = 'You do not have permission to create articles'
+    return context.rewrite('/401')
+  }
 
   const result = await actionManager.execute('article.create', {
     article: {
-      title: title as string,
-      content: content as string,
+      title: title,
+      content: content,
       authorId: authorId,
     },
   })
 
   if (!result) {
-    return new Response(null, {
-      status: 500,
-    })
+    context.locals.formErrors.application = 'Error creating article'
+    return context.rewrite('/articles/new')
   }
 
   return context.redirect('/')

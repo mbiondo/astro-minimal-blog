@@ -6,7 +6,7 @@ const { formErrors, formValues } = Astro.locals
 ---
 
 <Layout showNav={false}>
-	<form class='flex flex-col gap-5 min-h-full' method='post' action='/api/login'>
+	<form class='flex flex-col gap-5 min-h-full' method='post' action='/api/auth/login'>
 		<h1 class='text-2xl font-bold mx-auto'>Login</h1>
 		<label
 			class={formErrors?.email
@@ -51,7 +51,7 @@ const { formErrors, formValues } = Astro.locals
 		</label>
 		{
 			formErrors && (
-				<div role='alert' class='alert alert-error'>
+				<div role='alert' class='alert alert-warning'>
 					<svg
 						xmlns='http://www.w3.org/2000/svg'
 						class='h-6 w-6 shrink-0 stroke-current'
