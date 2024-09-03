@@ -17,10 +17,14 @@ const { article } = Astro.props
 		Title
 		<input type='text' class='grow' name='title' placeholder='foo' value={article?.title ?? ''} />
 	</label>
-
-	<textarea class='textarea textarea-bordered textarea-lg w-full' name='content' placeholder='Content' required
-		>{article ? article.content : ''}</textarea
-	>
+	<div class='flex items-center flex-col'>
+		<textarea
+			class='textarea textarea-bordered w-full min-h-[300px] p-2'
+			name='content'
+			placeholder='Content'
+			required={true}>{article ? article.content : ''}</textarea
+		>
+	</div>
 
 	<button type='submit' class='btn btn-primary'>{article ? 'Save' : 'Create'}</button>
 </form>

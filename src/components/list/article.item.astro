@@ -1,6 +1,7 @@
 ---
 import type { Article } from '@lib/article/types'
 import { Markdown } from 'astro-remote'
+import Avatar from '@components/avatar/avatar.astro'
 
 interface Props {
 	article: Article
@@ -13,7 +14,12 @@ const actionManager = Astro.locals.actionManager
 actionManager.setContext({ ...actionManager.getContext(), article })
 ---
 
-<article class='prose prose-lg max-w-7xl flex flex-col'>
+<article class='prose prose-lg max-w-7xl flex flex-col gap-5'>
+	<Avatar
+		avatar='https://cdn.jsdelivr.net/gh/alohe/memojis/png/vibrent_7.png'
+		name={article.author?.name ?? 'Unknown'}
+		email={article.author?.email ?? 'Unknown'}
+	/>
 	<Markdown content={article.content.substring(0, 500) + (article.content.length > 500 ? '...' : '')} />
 	<div class='flex
 			flex-row

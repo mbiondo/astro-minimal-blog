@@ -38,17 +38,17 @@ export default async function seed() {
       authorId: userId,
       title: 'Welcome to Astro',
       content: `
-        ### Welcome to Astro
-        This is a sample article to help you get started with Astro.
+### Welcome to Astro
+This is a sample article to help you get started with Astro.
 
-        ## Getting Started
-        To get started with Astro, you can use the following commands:
+## Getting Started
+To get started with Astro, you can use the following commands:
 
-        \`\`\`sh
-        npm install
-        npm run dev
-        \`\`\`
-      `,
+\`\`\`sh
+npm install
+npm run dev
+\`\`\` 
+`,
     },
   ])
 
