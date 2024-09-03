@@ -6,7 +6,7 @@ import { db, eq, User } from 'astro:db'
 import type { APIContext } from 'astro'
 
 export async function POST(context: APIContext): Promise<Response> {
-  const formData = await context.request.formData()
+  const formData = await context.request.clone().formData()
   const email = (formData.get('email') as string).trim()
 
   if (typeof email !== 'string' || email.length < 3 || email.length > 255 || !/.+@.+\..+/.test(email)) {

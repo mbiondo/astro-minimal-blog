@@ -8,7 +8,7 @@ export async function POST(context: APIContext): Promise<Response> {
     })
   }
 
-  const formData = await context.request.formData()
+  const formData = await context.request.clone().formData()
   const title = formData.get('title')
   const content = formData.get('content')
   const authorId = (context.locals.user as LocalUser).id
