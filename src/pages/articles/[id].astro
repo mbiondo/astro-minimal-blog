@@ -14,18 +14,7 @@ actionManager.setContext({ ...actionManager.getContext(), article })
 
 <Layout title={article.title}>
 	<article class='prose prose-lg max-w-7xl'>
-		{
-			article.id ? (
-				<Markdown
-					content={article.content}
-					sanitize={{
-						allowComments: true,
-					}}
-				/>
-			) : (
-				<p>Article not found</p>
-			)
-		}
+		{article.id ? <Markdown content={article.content} /> : <p>Article not found</p>}
 		<div class='flex flex-row gap-5 place-content-end'>
 			{
 				actionManager.canExecute('article.edit') && (
