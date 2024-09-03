@@ -1,6 +1,7 @@
 import type { Article as LocalArticle, ArticleAction, ArticleParams } from '../types'
 import { db, Article, eq } from 'astro:db'
-import CanEditPolicy from '../policies/canEdit'
+import CanEditPolicy from '@lib/article/policies/canEdit'
+import ArticleRepository from '@lib/article/repository'
 
 export const editArticle: ArticleAction = {
   id: 'article.edit',
@@ -9,15 +10,13 @@ export const editArticle: ArticleAction = {
   exec: async (params: ArticleParams): Promise<LocalArticle> => {
     if (!params.article.id) throw new Error('Article id is required')
 
-    const updatedCar: LocalArticle[] = await db
-      .update(Article)
-      .set({
-        title: params.article.title,
-        content: params.article.content,
-      })
-      .where(eq(Article.id, params.article.id))
-      .returning()
+    const article = await ArticleRepository.update({
+      id: params.article.id,
+      title: params.article.title || 'Test Article',
+      content: params.article.content || 'This is a test article',
+      authorId: params.article.authorId || '1',
+    })
 
-    return updatedCar[0]
+    return article
   },
 }

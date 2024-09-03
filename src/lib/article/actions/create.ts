@@ -1,6 +1,6 @@
-import { generateId } from 'lucia'
 import type { Article as LocalArticle, ArticleAction, ArticleParams } from '../types'
-import { db, Article } from 'astro:db'
+import ArticleRepository from '../repository'
+
 import CanCreatePolicy from '../policies/canCreate'
 
 export const createArticle: ArticleAction = {
@@ -9,15 +9,12 @@ export const createArticle: ArticleAction = {
   policies: CanCreatePolicy,
   exec: async (params: ArticleParams): Promise<LocalArticle> => {
     if (!params.article.authorId) throw new Error('Author is required')
-    const articleId = generateId(15)
-    const article: LocalArticle = {
-      id: articleId,
+    const newArticle = await ArticleRepository.create({
       title: params.article.title || 'Test Article',
       content: params.article.content || 'This is a test article',
       editors: [],
       authorId: params.article.authorId,
-    }
-    await db.insert(Article).values(article)
-    return article
+    })
+    return newArticle
   },
 }

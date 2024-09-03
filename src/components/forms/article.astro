@@ -10,7 +10,7 @@ const { article } = Astro.props
 
 <form
 	class='flex flex-col gap-5 min-h-full'
-	method='post'
+	method='POST'
 	action={article?.id ? `/api/articles/edit/${article.id}` : '/api/articles/create'}
 >
 	<label class='input input-bordered flex items-center gap-2'>
