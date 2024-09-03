@@ -10,9 +10,6 @@ export async function POST(context: APIContext): Promise<Response> {
 
   const { id } = context.params
 
-  const formData = await context.request.formData()
-  const title = formData.get('title')
-  const content = formData.get('content')
   const actionManager = context.locals.actionManager
 
   if (!actionManager) {

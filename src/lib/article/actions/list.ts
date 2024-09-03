@@ -1,6 +1,5 @@
 import ArticleRepository from '../repository'
 import type { Article as LocalArticle, ArticleAction } from '../types'
-import { db, Article, User, eq } from 'astro:db'
 
 export const listArticle: ArticleAction = {
   id: 'article.list',

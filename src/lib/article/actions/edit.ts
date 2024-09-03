@@ -1,5 +1,5 @@
 import type { Article as LocalArticle, ArticleAction, ArticleParams } from '../types'
-import { db, Article, eq } from 'astro:db'
+
 import CanEditPolicy from '@lib/article/policies/canEdit'
 import ArticleRepository from '@lib/article/repository'
 
