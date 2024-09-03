@@ -45,8 +45,8 @@ export const syntaxHighlighting = () => {
       const code = codeHTML
         .replace('<pre class="shiki dracula" style="background-color:#282A36;color:#F8F8F2" tabindex="0">', '')
         .replace('</pre>', '')
-      console.log(code)
-      pre.setHTMLUnsafe(code)
+
+      pre.innerHTML = code
     }
   })
 }
