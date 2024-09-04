@@ -10,11 +10,13 @@ export async function POST(context: APIContext): Promise<Response> {
   const email = (formData.get('email') as string).trim()
   const password = formData.get('password') as string
   const name = formData.get('name') as string
+  const avatar = formData.get('avatar') as string
 
   context.locals.formErrors = {}
   context.locals.formValues = {
     email,
     name,
+    avatar,
   }
 
   if (typeof email !== 'string' || email.length < 3 || email.length > 255 || !/.+@.+\..+/.test(email)) {
@@ -47,6 +49,7 @@ export async function POST(context: APIContext): Promise<Response> {
     confirmed: false,
     name: name,
     role: 'user',
+    avatar: avatar,
     hashed_password: hashedPassword,
   })
 

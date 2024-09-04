@@ -18,9 +18,7 @@ const { title = 'Astro minial blog', showNav = true } = Astro.props
 	</head>
 	<body>
 		{showNav && <Nav />}
-		<main
-			class='container p-4 pt-20 text-skin-base pb-32 min-h-full relative mx-auto max-w-7xl gap-5 flex flex-col'
-		>
+		<main class='container p-4 pt-20 text-skin-base pb-32 min-h-full relative mx-auto max-w-7xl flex flex-col'>
 			<slot />
 		</main>
 		<script>

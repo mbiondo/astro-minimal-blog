@@ -1,0 +1,19 @@
+---
+interface Props {
+	articleId: string
+}
+
+const { articleId } = Astro.props
+---
+
+<form class='flex flex-col gap-5 min-h-full' method='POST' action='/api/articles/comments/create'>
+	<div class='flex items-center flex-col'>
+		<input type='hidden' name='articleId' value={articleId} />
+		<textarea
+			class='textarea textarea-bordered w-full min-h-[100px] p-2'
+			name='content'
+			placeholder='Write a comment...'
+			required={true}></textarea>
+	</div>
+	<button type='submit' class='btn btn-primary'> Post comment </button>
+</form>

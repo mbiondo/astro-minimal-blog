@@ -6,6 +6,7 @@ export const User = defineTable({
     email: column.text({ unique: true }),
     name: column.text(),
     role: column.text(),
+    avatar: column.text(),
     confirmed: column.boolean(),
     hashed_password: column.text(),
   },
@@ -32,7 +33,7 @@ export const Article = defineTable({
   },
 })
 
-export const Editors = defineTable({
+export const Editor = defineTable({
   columns: {
     articleId: column.text({
       references: () => Article.columns.id,
@@ -43,13 +44,13 @@ export const Editors = defineTable({
   },
 })
 
-export const Comments = defineTable({
+export const Comment = defineTable({
   columns: {
     id: column.text({ primaryKey: true }),
     articleId: column.text({
       references: () => Article.columns.id,
     }),
-    userId: column.text({
+    authorId: column.text({
       references: () => User.columns.id,
     }),
     content: column.text(),

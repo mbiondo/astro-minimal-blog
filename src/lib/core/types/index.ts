@@ -4,6 +4,7 @@ interface LocalUser {
   email: string
   role: string
   confirmed: boolean
+  avatar?: string
 }
 
 export type { LocalUser }

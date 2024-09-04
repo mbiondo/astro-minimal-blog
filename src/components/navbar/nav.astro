@@ -13,13 +13,16 @@ const user = Astro.locals.user
 		<div class='lg:flex lg:flex-1 lg:justify-end'>
 			{
 				user ? (
-					<>
+					<div class='flex  gap-2'>
+						<a class='text-sm font-semibold leading-6' href='/articles/new'>
+							Create article
+						</a>
 						<form method='post' action='/api/auth/logout'>
 							<button class='text-sm font-semibold leading-6'>
 								Logout <span aria-hidden='true'>&rarr;</span>
 							</button>
 						</form>
-					</>
+					</div>
 				) : (
 					<Fragment>
 						<a class='text-sm font-semibold leading-6' href='/auth/login'>

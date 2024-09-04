@@ -29,6 +29,7 @@ export default async function seed() {
       hashed_password: await new Argon2id().hash(ADMIN_PASSWORD),
       role: 'admin',
       confirmed: true,
+      avatar: 'https://cdn.jsdelivr.net/gh/alohe/memojis/png/vibrent_7.png',
     },
   ])
 

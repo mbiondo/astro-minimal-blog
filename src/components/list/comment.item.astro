@@ -1,0 +1,42 @@
+---
+import type { Comment } from '@lib/article/types'
+import { Markdown } from 'astro-remote'
+import Avatar from '@components/avatar/avatar.astro'
+
+interface Props {
+	comment: Comment
+}
+
+const { comment } = Astro.props
+
+const actionManager = Astro.locals.actionManager
+---
+
+<article class='prose max-w-7xl flex flex-col'>
+	<div class='flex place-content-between'>
+		<Avatar
+			avatar={comment.author?.avatar ?? 'https://cdn.jsdelivr.net/gh/alohe/memojis/png/vibrent_7.png'}
+			name={comment.author?.name ?? 'Unknown'}
+			email={comment.author?.email ?? 'Unknown'}
+		/>
+		<div class='flex flex-row gap-5'>
+			{
+				actionManager.canExecute('comment.edit') && (
+					<a class='btn btn-warning' href={`/comments/edit/${comment.id}`}>
+						Edit
+					</a>
+				)
+			}
+			{
+				actionManager.canExecute('comment.delete') && (
+					<form method='POST' action={`/api/comments/delete/${comment.id}`}>
+						<button type='submit' class='btn btn-danger'>
+							Delete
+						</button>
+					</form>
+				)
+			}
+		</div>
+	</div>
+	<Markdown content={comment.content.substring(0, 500) + (comment.content.length > 500 ? '...' : '')} />
+</article>

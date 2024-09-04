@@ -9,6 +9,15 @@ interface Article {
   author?: LocalUser
   editorsId?: string[]
   editors?: LocalUser[]
+  comments?: Comment[]
+}
+
+interface Comment {
+  id: string
+  articleId: string
+  content: string
+  authorId: string
+  author?: LocalUser
 }
 
 interface ArticleContext extends IContext {
@@ -18,10 +27,11 @@ interface ArticleContext extends IContext {
 
 interface ArticleParams extends IActionParam {
   article: Partial<Article>
+  comment: Partial<Comment>
 }
 
 type ArticleAction = IAction<ArticleContext, ArticleParams>
 
 type ArticlePolicy = IPolicy<ArticleContext>
 
-export type { Article, ArticleContext, ArticleParams, ArticleAction, ArticlePolicy }
+export type { Article, ArticleContext, ArticleParams, ArticleAction, ArticlePolicy, Comment }

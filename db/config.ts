@@ -1,5 +1,5 @@
 import { defineDb } from 'astro:db'
-import { Session, User, Token, Article, Comments, Editors } from './tables'
+import { Session, User, Token, Article, Comment, Editor } from './tables'
 
 export default defineDb({
   tables: {
@@ -7,7 +7,7 @@ export default defineDb({
     User,
     Token,
     Article,
-    Comments,
-    Editors,
+    Comment,
+    Editor,
   },
 })

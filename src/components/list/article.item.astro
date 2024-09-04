@@ -14,33 +14,37 @@ const actionManager = Astro.locals.actionManager
 actionManager.setContext({ ...actionManager.getContext(), article })
 ---
 
-<article class='prose prose-lg max-w-7xl flex flex-col gap-5'>
-	<Avatar
-		avatar='https://cdn.jsdelivr.net/gh/alohe/memojis/png/vibrent_7.png'
-		name={article.author?.name ?? 'Unknown'}
-		email={article.author?.email ?? 'Unknown'}
-	/>
-	<Markdown content={article.content.substring(0, 500) + (article.content.length > 500 ? '...' : '')} />
-	<div class='flex
+<article class='prose max-w-7xl flex flex-col gap-5'>
+	<div class='flex place-content-between'>
+		<Avatar
+			avatar={article.author?.avatar ?? 'https://cdn.jsdelivr.net/gh/alohe/memojis/png/vibrent_7.png'}
+			name={article.author?.name ?? 'Unknown'}
+			email={article.author?.email ?? 'Unknown'}
+		/>
+		<div class='flex
 			flex-row
 			gap-5
 			place-content-end'>
-		<a class='btn btn-primary' href={`/articles/${article.id}`}>Read more</a>
-		{
-			actionManager.canExecute('article.edit') && (
-				<a class='btn btn-warning' href={`/articles/edit/${article.id}`}>
-					Edit
-				</a>
-			)
-		}
-		{
-			actionManager.canExecute('article.delete') && (
-				<form method='POST' action={`/api/articles/delete/${article.id}`}>
-					<button type='submit' class='btn btn-danger'>
-						Delete
-					</button>
-				</form>
-			)
-		}
+			{
+				actionManager.canExecute('article.edit') && (
+					<a class='btn btn-warning' href={`/articles/edit/${article.id}`}>
+						Edit
+					</a>
+				)
+			}
+			{
+				actionManager.canExecute('article.delete') && (
+					<form method='POST' action={`/api/articles/delete/${article.id}`}>
+						<button type='submit' class='btn btn-danger'>
+							Delete
+						</button>
+					</form>
+				)
+			}
+		</div>
 	</div>
+	<div class='max-h-[300px] overflow-hidden'>
+		<Markdown content={article.content} />
+	</div>
+	<a class='btn btn-ghost' href={`/articles/${article.id}`} data-astro-prefetch>Read more</a>
 </article>
