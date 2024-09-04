@@ -1,6 +1,7 @@
 ---
 import ViewTransitions from 'astro/components/ViewTransitions.astro'
 import Nav from '../components/navbar/nav.astro'
+import SpeedInsights from '@vercel/speed-insights/astro'
 
 interface Props {
 	title?: string
@@ -14,7 +15,16 @@ const { title = 'Astro minial blog', showNav = true } = Astro.props
 		<meta charset='UTF-8' />
 		<meta name='viewport' content='width=device-width' />
 		<title>{title}</title>
+		<link rel='icon' href='/favicon.svg' />
+		<meta
+			name='description'
+			content='This repository is a minimalistic blog built with Astro, leveraging Astro DB, Lucia Auth, and the actions-manager library. It is deployed on Vercel for seamless hosting.'
+		/>
+		<meta name='author' content='Maximiliano Biondo' />
+		<meta name='tags' content='astro, blog, minimal' />
+		<meta name='keywords' content='astro, blog, minimal, astro db, typescript, actions manager' />
 		<ViewTransitions />
+		<SpeedInsights />
 	</head>
 	<body>
 		{showNav && <Nav />}
