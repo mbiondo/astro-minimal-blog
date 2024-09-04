@@ -9,7 +9,9 @@ import tailwind from '@astrojs/tailwind'
 export default defineConfig({
   output: 'server',
   integrations: [db(), tailwind()],
-  adapter: vercel(),
+  adapter: vercel({
+    webAnalytics: { enabled: true },
+  }),
   prefetch: true,
   markdown: {
     shikiConfig: {
