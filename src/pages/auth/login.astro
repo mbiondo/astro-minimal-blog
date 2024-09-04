@@ -1,12 +1,51 @@
 ---
 import Layout from '@layout/layout.astro'
-export const prerender = true
+import { lucia } from '@lib/auth/auth'
+import { User, eq, db } from 'astro:db'
+import { Argon2id } from 'node_modules/oslo/dist/password/argon2id'
 
-const { formErrors, formValues } = Astro.locals
+const formErrors: Record<string, string> = {}
+const formValues: Record<string, string> = {}
+
+if (Astro.request.method === 'POST') {
+	const formData = await Astro.request.formData()
+	const email = (formData.get('email') as string).trim()
+	const password = formData.get('password') as string
+
+	if (typeof email !== 'string' || email.length < 3 || email.length > 255 || !/.+@.+\..+/.test(email)) {
+		formErrors.email = 'Invalid email address'
+	}
+
+	if (typeof password !== 'string' || password.length < 6 || password.length > 255) {
+		formErrors.password = 'Password must be at least 6 characters long'
+	}
+
+	const existingUser = await db.select().from(User).where(eq(User.email, email.toLowerCase())).get()
+
+	if (!existingUser) {
+		formErrors.email = 'User not found'
+	}
+
+	const validPassword = existingUser ? await new Argon2id().verify(existingUser.hashed_password, password) : false
+
+	if (!validPassword) {
+		formErrors.password = 'Invalid password'
+	}
+
+	if (Object.keys(formErrors).length === 0 && existingUser && validPassword) {
+		formValues.email = email
+		const session = await lucia.createSession(existingUser.id, {})
+		const sessionCookie = lucia.createSessionCookie(session.id)
+		Astro.cookies.set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes)
+		return Astro.redirect('/')
+	}
+}
+
+const haveErrors = Object.keys(formErrors).length > 0
 ---
 
 <Layout showNav={false}>
-	<form class='flex flex-col gap-5 min-h-full' method='post' action='/api/auth/login'>
+	<form class='flex flex-col gap-5 min-h-full' method='POST'>
 		<h1 class='text-2xl font-bold mx-auto'>Login</h1>
 		<label
 			class={formErrors?.email
@@ -50,7 +89,7 @@ const { formErrors, formValues } = Astro.locals
 			/>
 		</label>
 		{
-			formErrors && (
+			haveErrors && (
 				<div role='alert' class='alert alert-warning'>
 					<svg
 						xmlns='http://www.w3.org/2000/svg'

@@ -1,12 +1,68 @@
 ---
 import Layout from '@layout/layout.astro'
-export const prerender = true
+import { lucia } from '@lib/auth/auth'
+import { db, eq, User } from 'astro:db'
+import { generateId } from 'lucia'
+import { Argon2id } from 'node_modules/oslo/dist/password/argon2id'
 
-const { formErrors, formValues } = Astro.locals
+const formErrors: Record<string, string> = {}
+const formValues: Record<string, string> = {}
+
+if (Astro.request.method === 'POST') {
+	const formData = await Astro.request.formData()
+	const email = (formData.get('email') as string).trim()
+	const password = formData.get('password') as string
+	const name = formData.get('name') as string
+	const avatar = formData.get('avatar') as string
+
+	formValues.email = email
+	formValues.name = name
+
+	if (typeof email !== 'string' || email.length < 3 || email.length > 255 || !/.+@.+\..+/.test(email)) {
+		formErrors.email = 'Invalid email'
+	}
+
+	if (typeof password !== 'string' || password.length < 6 || password.length > 255) {
+		formErrors.password = 'Invalid password'
+	}
+
+	if (typeof name !== 'string' || name.length < 1 || name.length > 255) {
+		formErrors.name = 'Invalid name'
+	}
+
+	const userId = generateId(15)
+	const hashedPassword = await new Argon2id().hash(password)
+
+	const existingUser = await db.select().from(User).where(eq(User.email, email.toLowerCase())).get()
+
+	if (existingUser) {
+		formErrors.email = 'Email already in use'
+	}
+	if (!existingUser && Object.keys(formErrors).length === 0) {
+		await db.insert(User).values({
+			id: userId,
+			email: email.toLowerCase(),
+			confirmed: false,
+			name: name,
+			role: 'user',
+			avatar: avatar,
+			hashed_password: hashedPassword,
+		})
+
+		const session = await lucia.createSession(userId, {})
+		const sessionCookie = lucia.createSessionCookie(session.id)
+
+		Astro.cookies.set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes)
+
+		return Astro.redirect('/')
+	}
+}
+
+const haveErrors = Object.keys(formErrors).length > 0
 ---
 
 <Layout showNav={false}>
-	<form class='flex flex-col gap-5 min-h-full' method='post' action='/api/auth/signup'>
+	<form class='flex flex-col gap-5 min-h-full' method='POST'>
 		<h1 class='text-2xl font-bold mx-auto'>Sign up</h1>
 		<label
 			class={formErrors?.email
@@ -72,7 +128,7 @@ const { formErrors, formValues } = Astro.locals
 		/>
 
 		{
-			formErrors && (
+			haveErrors && (
 				<div role='alert' class='alert alert-warning'>
 					<svg
 						xmlns='http://www.w3.org/2000/svg'

@@ -1,6 +1,49 @@
 ---
 import ArticleForm from '@components/forms/article.astro'
 import Layout from '@layout/layout.astro'
+import type { LocalUser } from '@lib/core/types'
+
+const { actionManager, session } = Astro.locals
+const formErrors: Record<string, string> = {}
+const formValues: Record<string, string> = {}
+
+if (!session) {
+	return Astro.redirect('/auth/login')
+}
+
+if (!actionManager.canExecute('article.create')) {
+	return Astro.redirect('/401')
+}
+
+if (Astro.request.method === 'POST') {
+	const formData = await Astro.request.clone().formData()
+	const title = formData.get('title') as string
+	const content = formData.get('content') as string
+	const authorId = (Astro.locals.user as LocalUser).id
+	const actionManager = Astro.locals.actionManager
+
+	if (!actionManager) {
+		return Astro.redirect('/401')
+	}
+
+	if (!actionManager.canExecute('article.create')) {
+		return Astro.redirect('/401')
+	}
+
+	const result = await actionManager.execute('article.create', {
+		article: {
+			title: title,
+			content: content,
+			authorId: authorId,
+		},
+	})
+
+	if (!result) {
+		return Astro.redirect('/500')
+	}
+
+	return Astro.redirect('/')
+}
 ---
 
 <Layout title='Create new article'>

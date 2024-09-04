@@ -6,6 +6,35 @@ import ArticleForm from '@components/forms/article.astro'
 const { id } = Astro.params
 const actionManager = Astro.locals.actionManager
 
+if (Astro.request.method === 'POST') {
+	if (!Astro.locals.session) {
+		return new Response(null, {
+			status: 401,
+		})
+	}
+
+	const { id } = Astro.params
+
+	const formData = await Astro.request.clone().formData()
+	const title = formData.get('title')
+	const content = formData.get('content')
+	const actionManager = Astro.locals.actionManager
+
+	const article: Article = await actionManager.execute('article.get', { article: { id } })
+
+	actionManager.setContext({ ...actionManager.getContext(), article })
+
+	await actionManager.execute('article.edit', {
+		article: {
+			id: id as string,
+			title: title as string,
+			content: content as string,
+		},
+	})
+
+	return Astro.redirect(`/articles/${id}`)
+}
+
 const article: Article = await actionManager.execute('article.get', { article: { id } })
 ---
 
