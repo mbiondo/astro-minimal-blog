@@ -4,8 +4,6 @@ import Layout from '@layout/layout.astro'
 import type { LocalUser } from '@lib/core/types'
 
 const { actionManager, session } = Astro.locals
-const formErrors: Record<string, string> = {}
-const formValues: Record<string, string> = {}
 
 if (!session) {
 	return Astro.redirect('/auth/login')

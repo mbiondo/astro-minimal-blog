@@ -34,13 +34,14 @@ if (Astro.request.method === 'POST') {
 		return Astro.redirect('/401')
 	}
 
-	const result = await actionManager.execute('comment.create', {
+	await actionManager.execute('comment.create', {
 		comment: {
 			content: content,
 			authorId: authorId,
 			articleId: articleId,
 		},
 	})
+
 	article = await actionManager.execute('article.get', { article: { id } })
 }
 ---
