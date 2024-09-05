@@ -33,8 +33,13 @@ const { title = 'Astro minial blog', showNav = true } = Astro.props
 		</main>
 		<script>
 			import { syntaxHighlighting } from '@lib/mdx/syntax-highlighting'
+			//import { tocCreator } from '@lib/mdx/toc-creator'
+			//tocCreator()
 			syntaxHighlighting()
-			document.addEventListener('astro:after-swap', syntaxHighlighting)
+			document.addEventListener('astro:after-swap', () => {
+				//tocCreator()
+				syntaxHighlighting()
+			})
 		</script>
 	</body>
 </html>

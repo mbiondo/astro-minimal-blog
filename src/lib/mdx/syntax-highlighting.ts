@@ -44,7 +44,7 @@ export const syntaxHighlighting = () => {
       'btn-square',
       'btn-neutral',
       'cursor-copy',
-      'top-3',
+      'top-2',
       'right-1',
       'rounded',
       'cursor-pointer',

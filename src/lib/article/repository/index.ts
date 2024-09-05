@@ -38,8 +38,6 @@ class ArticleRepository {
       .innerJoin(User, eq(Comment.authorId, User.id))
       .where(eq(Comment.articleId, id))
 
-    console.log(comments)
-
     return article
       ? {
           id: article.Article.id,
