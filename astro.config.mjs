@@ -4,11 +4,13 @@ import vercel from '@astrojs/vercel/serverless'
 
 import tailwind from '@astrojs/tailwind'
 
+import webVitals from '@astrojs/web-vitals';
+
 // https://astro.build/config
 
 export default defineConfig({
   output: 'server',
-  integrations: [db(), tailwind()],
+  integrations: [db(), tailwind(), webVitals()],
   adapter: vercel({
     webAnalytics: { enabled: true },
   }),

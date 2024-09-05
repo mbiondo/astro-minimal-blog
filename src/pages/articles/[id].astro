@@ -5,14 +5,44 @@ import type { Article } from '@lib/article/types'
 import { Markdown } from 'astro-remote'
 import CommentForm from '@components/forms/comment.astro'
 import CommentList from '@components/list/comment.astro'
+import type { LocalUser } from '@lib/core/types'
 
 const { id } = Astro.params
 
 const actionManager = Astro.locals.actionManager
 
-const article: Article = await actionManager.execute('article.get', { article: { id } })
+let article: Article = await actionManager.execute('article.get', { article: { id } })
 
 actionManager.setContext({ ...actionManager.getContext(), article })
+
+if (Astro.request.method === 'POST') {
+	if (!Astro.locals.session) {
+		return Astro.redirect('/401')
+	}
+
+	const formData = await Astro.request.formData()
+	const content = formData.get('content') as string
+	const authorId = (Astro.locals.user as LocalUser).id
+	const articleId = formData.get('articleId') as string
+	const actionManager = Astro.locals.actionManager
+
+	if (!actionManager) {
+		return Astro.rewrite('/articles/new')
+	}
+
+	if (!actionManager.canExecute('comment.create')) {
+		return Astro.redirect('/401')
+	}
+
+	const result = await actionManager.execute('comment.create', {
+		comment: {
+			content: content,
+			authorId: authorId,
+			articleId: articleId,
+		},
+	})
+	article = await actionManager.execute('article.get', { article: { id } })
+}
 ---
 
 <Layout title={article.title}>

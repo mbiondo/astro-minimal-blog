@@ -12,8 +12,6 @@ export async function POST(context: APIContext): Promise<Response> {
   const articleId = formData.get('articleId') as string
   const actionManager = context.locals.actionManager
 
-  console.log('content', content)
-
   context.locals.formErrors = {}
   context.locals.formValues = {
     content,
