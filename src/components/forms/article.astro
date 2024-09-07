@@ -8,14 +8,14 @@ interface Props {
 const { article } = Astro.props
 ---
 
-<form class='flex flex-col gap-5 min-h-full' method='POST'>
+<form class='flex flex-col gap-5 max-w-7xl' method='POST'>
 	<label class='input input-bordered flex items-center gap-2'>
 		Title
 		<input type='text' class='grow' name='title' placeholder='foo' value={article?.title ?? ''} />
 	</label>
 	<div class='flex items-center flex-col'>
 		<textarea
-			class='textarea textarea-bordered w-full min-h-[300px] p-2'
+			class='textarea textarea-bordered w-full min-h-[400px] p-2'
 			name='content'
 			placeholder='Content'
 			required={true}>{article ? article.content : ''}</textarea

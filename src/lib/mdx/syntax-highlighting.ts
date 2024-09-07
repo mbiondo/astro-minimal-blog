@@ -7,6 +7,8 @@ const highlighter = await createHighlighter({
     'typescript',
     'html',
     'css',
+    'jsx',
+    'tsx',
     'json',
     'shell',
     'python',

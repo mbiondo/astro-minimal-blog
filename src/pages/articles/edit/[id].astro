@@ -39,5 +39,9 @@ const article: Article = await actionManager.execute('article.get', { article: {
 ---
 
 <Layout title={article.title}>
-	<ArticleForm article={article} />
+	<section class='flex place-content-center'>
+		<article class='prose flex flex-col gap-5 p-10 w-full xl:max-w-7xl'>
+			<ArticleForm article={article} />
+		</article>
+	</section>
 </Layout>

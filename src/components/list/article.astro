@@ -9,7 +9,7 @@ interface Props {
 const { articles } = Astro.props
 ---
 
-<div class='flex flex-col'>
+<div class='prose w-full xl:max-w-7xl '>
 	{articles.map((article) => (
 		<ArticleItem article={article} />
 		<div class="divider"></div>

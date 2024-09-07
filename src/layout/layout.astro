@@ -8,6 +8,8 @@ interface Props {
 	showNav?: boolean
 }
 const { title = 'Astro minial blog', showNav = true } = Astro.props
+const user = Astro.locals.user
+const actionManager = Astro.locals.actionManager
 ---
 
 <html lang='en' data-theme='dracula'>
@@ -26,20 +28,31 @@ const { title = 'Astro minial blog', showNav = true } = Astro.props
 		<ViewTransitions />
 		<SpeedInsights />
 	</head>
-	<body>
-		{showNav && <Nav />}
-		<main class='container p-4 pt-20 text-skin-base pb-32 min-h-full relative mx-auto max-w-7xl flex flex-col'>
-			<slot />
-		</main>
-		<script>
-			import { syntaxHighlighting } from '@lib/mdx/syntax-highlighting'
-			//import { tocCreator } from '@lib/mdx/toc-creator'
-			//tocCreator()
-			syntaxHighlighting()
-			document.addEventListener('astro:after-swap', () => {
-				//tocCreator()
-				syntaxHighlighting()
-			})
-		</script>
+	<body class='min-h-screen'>
+		<div class='drawer'>
+			<input id='main-drawer' type='checkbox' class='drawer-toggle' />
+			<div class='drawer-content flex flex-col'>
+				<Nav />
+				<main class='flex-1 max-w-full'>
+					<!-- Page content -->
+
+					<slot />
+				</main>
+			</div>
+			<div class='drawer-side'>
+				<label for='main-drawer' aria-label='close sidebar' class='drawer-overlay'></label>
+				<ul class='menu bg-base-200 min-h-full w-80 p-4' id='toc-mobile'></ul>
+			</div>
+		</div>
 	</body>
 </html>
+<script>
+	import { syntaxHighlighting } from '@lib/mdx/syntax-highlighting'
+	import { tocCreator } from '@lib/mdx/toc-creator'
+	tocCreator()
+	syntaxHighlighting()
+	document.addEventListener('astro:after-swap', () => {
+		tocCreator()
+		syntaxHighlighting()
+	})
+</script>
