@@ -23,6 +23,7 @@ interface Comment {
 interface ArticleContext extends IContext {
   article?: Article
   user?: LocalUser
+  comment?: Comment
 }
 
 interface ArticleParams extends IActionParam {

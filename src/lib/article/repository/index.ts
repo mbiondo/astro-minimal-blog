@@ -97,6 +97,37 @@ class ArticleRepository {
     return true
   }
 
+  static async findCommentById(id: string): Promise<LocalComment> {
+    const comment = await db
+      .select()
+      .from(Comment)
+      .innerJoin(User, eq(Comment.authorId, User.id))
+      .where(eq(Comment.id, id))
+      .get()
+
+    return comment
+      ? {
+          id: comment.Comment.id,
+          articleId: comment.Comment.articleId,
+          authorId: comment.Comment.authorId,
+          content: comment.Comment.content,
+          author: {
+            id: comment.User.id,
+            name: comment.User.name,
+            avatar: comment.User.avatar,
+            email: comment.User.email,
+            role: comment.User.role,
+            confirmed: comment.User.confirmed,
+          },
+        }
+      : { id: '', articleId: '', authorId: '', content: '' }
+  }
+
+  static async deleteComment(id: string): Promise<boolean> {
+    await db.delete(Comment).where(eq(Comment.id, id))
+    return true
+  }
+
   static async createComment(comment: Omit<LocalComment, 'id'>): Promise<LocalComment> {
     const commentCreated: LocalComment = {
       id: generateId(15),
