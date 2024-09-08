@@ -1,4 +1,4 @@
-import type { Article, Comment } from '@lib/article/types'
+import type { Comment } from '@lib/article/types'
 import type { APIContext } from 'astro'
 
 export async function POST(context: APIContext): Promise<Response> {
