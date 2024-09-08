@@ -14,6 +14,7 @@ const highlighter = await createHighlighter({
     'python',
     'php',
     'ruby',
+    'bash',
     'go',
     'rust',
     'java',

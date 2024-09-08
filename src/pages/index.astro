@@ -10,6 +10,6 @@ const articles: Article[] = await actionManager.execute('article.list', {})
 
 <Layout title='Astro minimal blog'>
 	<section class='flex place-content-center'>
-		<ArticleList articles={articles} />
+		<ArticleList articles={articles.toReversed()} />
 	</section>
 </Layout>
