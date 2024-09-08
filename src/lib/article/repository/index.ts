@@ -1,28 +1,14 @@
 import type { Article as LocalArticle, Comment as LocalComment } from '../types'
 import { generateId } from 'lucia'
 import { db, Article, User, eq, Comment } from 'astro:db'
+import ArticleAdapter from '../adapters/article'
 
 type LocalArticlePartial = Omit<LocalArticle, 'id'>
 
 class ArticleRepository {
   static async findAll(): Promise<LocalArticle[]> {
     const result = await db.select().from(Article).innerJoin(User, eq(Article.authorId, User.id))
-    return result.map((item) => {
-      return {
-        id: item.Article.id,
-        title: item.Article.title,
-        content: item.Article.content,
-        authorId: item.Article.authorId,
-        author: item.User && {
-          id: item.User.id,
-          name: item.User.name,
-          email: item.User.email,
-          avatar: item.User.avatar,
-          role: item.User.role,
-          confirmed: item.User.confirmed,
-        },
-      }
-    })
+    return ArticleAdapter.mapArray(result)
   }
 
   static async findById(id: string): Promise<LocalArticle> {
@@ -39,34 +25,7 @@ class ArticleRepository {
       .where(eq(Comment.articleId, id))
 
     return article
-      ? {
-          id: article.Article.id,
-          title: article.Article.title,
-          content: article.Article.content,
-          authorId: article.Article.authorId,
-          comments: comments.map((comment) => ({
-            id: comment.Comment.id,
-            articleId: comment.Comment.articleId,
-            authorId: comment.Comment.authorId,
-            content: comment.Comment.content,
-            author: {
-              id: comment.User.id,
-              name: comment.User.name,
-              avatar: comment.User.avatar,
-              email: comment.User.email,
-              role: comment.User.role,
-              confirmed: comment.User.confirmed,
-            },
-          })),
-          author: article.User && {
-            id: article.User.id,
-            name: article.User.name,
-            avatar: article.User.avatar,
-            email: article.User.email,
-            role: article.User.role,
-            confirmed: article.User.confirmed,
-          },
-        }
+      ? ArticleAdapter.map({ ...article, Comments: comments })
       : { id: '', title: '', content: '', authorId: '' }
   }
 
@@ -105,22 +64,7 @@ class ArticleRepository {
       .where(eq(Comment.id, id))
       .get()
 
-    return comment
-      ? {
-          id: comment.Comment.id,
-          articleId: comment.Comment.articleId,
-          authorId: comment.Comment.authorId,
-          content: comment.Comment.content,
-          author: {
-            id: comment.User.id,
-            name: comment.User.name,
-            avatar: comment.User.avatar,
-            email: comment.User.email,
-            role: comment.User.role,
-            confirmed: comment.User.confirmed,
-          },
-        }
-      : { id: '', articleId: '', authorId: '', content: '' }
+    return comment ? ArticleAdapter.mapComment(comment) : { id: '', articleId: '', authorId: '', content: '' }
   }
 
   static async deleteComment(id: string): Promise<boolean> {
