@@ -90,4 +90,20 @@ if (Astro.request.method === 'POST') {
 			</article>
 		</div>
 	</section>
+	<script>
+		import { syntaxHighlighting } from '@lib/mdx/syntax-highlighting'
+		import { tocCreator } from '@lib/mdx/toc-creator'
+		const init = () => {
+			const path = window.location.pathname
+			//check if we are in the articles page
+			if (!path.includes('articles')) {
+				return
+			}
+			console.log('path', path)
+			tocCreator()
+			syntaxHighlighting()
+		}
+		init()
+		document.addEventListener('astro:after-swap', init)
+	</script>
 </Layout>
