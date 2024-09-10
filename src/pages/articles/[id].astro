@@ -54,14 +54,6 @@ if (Astro.request.method === 'POST') {
 					article.id ? (
 						<Fragment>
 							<div class='flex place-content-between'>
-								<Avatar
-									avatar={
-										article.author?.avatar ??
-										'https://cdn.jsdelivr.net/gh/alohe/memojis/png/vibrent_7.png'
-									}
-									name={article.author?.name ?? 'Unknown'}
-									email={article.author?.email ?? 'Unknown'}
-								/>
 								<div class='flex flex-row gap-5 place-content-end'>
 									{actionManager.canExecute('article.edit') && (
 										<a class='btn btn-warning' href={`/articles/edit/${article.id}`}>
