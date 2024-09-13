@@ -12,7 +12,7 @@ const haveComments = comments && comments.length > 0
 ---
 
 <div class='flex flex-col'>
-  {haveComments && <h2 class="text-2xl font-bold">Comments</h2>}
+  {haveComments && <h2 class="text-2xl mb-6 font-bold">Comments</h2>}
 	{haveComments && comments.map((comment) => (
 		<CommentItem comment={comment} />
 		<div class="divider"></div>

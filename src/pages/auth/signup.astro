@@ -63,8 +63,8 @@ const haveErrors = Object.keys(formErrors).length > 0
 
 <Layout>
 	<section class='flex place-content-center'>
-		<article class='prose flex flex-col gap-5 min-w-sm xl:max-w-7xl'>
-			<form class='flex flex-col gap-5 min-h-full' method='POST'>
+		<article class='flex flex-col gap-5 w-full md:max-w-sm'>
+			<form class='flex flex-col gap-5' method='POST'>
 				<h1 class='text-2xl font-bold mx-auto'>Sign up</h1>
 				<label
 					class={formErrors?.email

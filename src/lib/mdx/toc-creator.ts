@@ -14,7 +14,7 @@ const buildMenu = (headings: TocItem[], toc: HTMLElement, drawer: HTMLInputEleme
     if (heading.children.length > 0) {
       const details = document.createElement('details')
       details.setAttribute('id', `details-${headingElement.id}`)
-      details.open = drawer ? true : false
+      details.open = true
 
       const summary = document.createElement('summary')
       summary.textContent = heading.title
