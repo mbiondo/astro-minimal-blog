@@ -39,7 +39,7 @@ export default async function seed() {
       authorId: userId,
       title: 'Welcome to Astro 🚀',
       content: `
-# Welcome to Astro
+
 This is a sample article to help you get started with Astro.
 
 ## Getting Started

@@ -8,7 +8,7 @@ interface Props {
 const { article } = Astro.props
 ---
 
-<form class='flex flex-col gap-5 max-w-7xl min-w-full p-10' method='POST'>
+<form class='flex flex-col gap-5 max-w-7xl min-w-full md:pb-10 md:px-10' method='POST'>
 	<label class='input input-bordered flex items-center'>
 		<input type='text' class='grow' name='title' placeholder='Some title...' value={article?.title ?? ''} />
 	</label>

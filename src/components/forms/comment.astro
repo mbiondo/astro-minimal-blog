@@ -6,8 +6,9 @@ interface Props {
 const { articleId } = Astro.props
 ---
 
-<form class='flex flex-col gap-5 min-h-full' method='POST'>
-	<div class='flex items-center flex-col'>
+<form class='flex flex-col gap-3 min-h-full' method='POST'>
+  <div class='flex items-center flex-col'>
+    <h4 class="w-full font-medium">New comment</h4>
 		<input type='hidden' name='articleId' value={articleId} />
 		<textarea
 			class='textarea textarea-bordered w-full min-h-[100px] p-2'
