@@ -14,7 +14,7 @@ const actionManager = Astro.locals.actionManager
 actionManager.setContext({ ...actionManager.getContext(), article })
 ---
 
-<article class='prose max-w-7xl p-5'>
+<article class='prose max-w-4xl mx-auto p-5'>
 	<div class='flex place-content-between'>
 		<Avatar
 			avatar={article.author?.avatar ?? 'https://cdn.jsdelivr.net/gh/alohe/memojis/png/vibrent_7.png'}
@@ -43,9 +43,10 @@ actionManager.setContext({ ...actionManager.getContext(), article })
 			}
 		</div>
 	</div>
-	<div class='max-h-[350px] overflow-hidden'>
+	<div class='max-h-[350px] prose max-w-full overflow-hidden'>
+    <h2>{article.title}</h2>
 		<Markdown content={article.content} />
 	</div>
 
-	<a class='btn btn-ghost w-full' href={`/articles/${article.id}`} data-astro-prefetch>Read more</a>
+	<a class='btn btn-primary w-full mt-6' href={`/articles/${article.id}`} data-astro-prefetch>Read more</a>
 </article>

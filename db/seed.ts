@@ -40,7 +40,7 @@ export default async function seed() {
       slug: 'welcome-to-astro',
       title: 'Welcome to Astro 🚀',
       content: `
-# Welcome to Astro
+
 This is a sample article to help you get started with Astro.
 
 ## Getting Started

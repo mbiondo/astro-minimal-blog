@@ -46,8 +46,8 @@ const haveErrors = Object.keys(formErrors).length > 0
 
 <Layout>
 	<section class='flex place-content-center'>
-		<article class='flex flex-col min-w-sm xl:max-w-7xl'>
-			<form class='flex flex-col gap-5 min-h-full' method='POST'>
+		<article class='flex flex-col w-full md:max-w-sm'>
+			<form class='flex flex-col gap-5' method='POST'>
 				<h1 class='text-2xl font-bold mx-auto'>Login</h1>
 				<label
 					class={formErrors?.email
@@ -126,7 +126,7 @@ const haveErrors = Object.keys(formErrors).length > 0
 				<button class='btn btn-primary w-full'>Continue</button>
 			</form>
 			<div class='divider'>or</div>
-			<a class='btn btn-secondary w-full' href='/auth/signup'>Singup</a>
+			<a class='btn btn-secondary w-full' href='/auth/signup'>Sign up</a>
 		</article>
 	</section></Layout
 >
