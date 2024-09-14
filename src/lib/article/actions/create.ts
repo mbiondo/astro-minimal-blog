@@ -14,6 +14,7 @@ export const createArticle: ArticleAction = {
       content: params.article.content || 'This is a test article',
       editors: [],
       authorId: params.article.authorId,
+      slug: params.article.slug || 'test-article',
     })
     return newArticle
   },

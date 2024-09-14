@@ -24,5 +24,5 @@ export async function POST(context: APIContext): Promise<Response> {
 
   actionManager.execute('comment.delete', { comment: { id } })
 
-  return context.redirect(`/articles/${comment.articleId}`)
+  return context.redirect(`/`)
 }

@@ -15,6 +15,7 @@ export const editArticle: ArticleAction = {
       title: params.article.title || 'Test Article',
       content: params.article.content || 'This is a test article',
       authorId: params.article.authorId || '1',
+      slug: params.article.slug || 'test-article',
     })
 
     return article

@@ -1,0 +1,109 @@
+---
+import Avatar from '@components/avatar/avatar.astro'
+import Layout from '@layout/layout.astro'
+import type { Article } from '@lib/article/types'
+import { Markdown } from 'astro-remote'
+import CommentForm from '@components/forms/comment.astro'
+import CommentList from '@components/list/comment.astro'
+import type { LocalUser } from '@lib/core/types'
+
+const { slug } = Astro.params
+
+const actionManager = Astro.locals.actionManager
+
+let article: Article = await actionManager.execute('article.get', { article: { slug } })
+
+actionManager.setContext({ ...actionManager.getContext(), article })
+
+if (Astro.request.method === 'POST') {
+	if (!Astro.locals.session) {
+		return Astro.redirect('/401')
+	}
+
+	const formData = await Astro.request.formData()
+	const content = formData.get('content') as string
+	const authorId = (Astro.locals.user as LocalUser).id
+	const articleId = formData.get('articleId') as string
+	const actionManager = Astro.locals.actionManager
+
+	if (!actionManager) {
+		return Astro.rewrite('/articles/new')
+	}
+
+	if (!actionManager.canExecute('comment.create')) {
+		return Astro.redirect('/401')
+	}
+
+	await actionManager.execute('comment.create', {
+		comment: {
+			content: content,
+			authorId: authorId,
+			articleId: articleId,
+		},
+	})
+
+	article = await actionManager.execute('article.get', { article: { slug } })
+}
+---
+
+<Layout title={article.title}>
+	<section class='flex xl:max-w-7xl mx-auto justify-start items-start'>
+		<div class='hidden lg:flex w-full max-w-80 sticky top-2'>
+			<ul class='menu w-full' id='toc'></ul>
+		</div>
+		<article class='prose max-w-full xl:max-w-4xl w-full p-5'>
+			{
+				article.id ? (
+					<Fragment>
+						<div class='flex w-full place-content-between'>
+							<Avatar
+								avatar={
+									article.author?.avatar ??
+									'https://cdn.jsdelivr.net/gh/alohe/memojis/png/vibrent_7.png'
+								}
+								name={article.author?.name ?? 'Unknown'}
+								email={article.author?.email ?? 'Unknown'}
+							/>
+							<div class='flex flex-row gap-5 place-content-end'>
+								{actionManager.canExecute('article.edit') && (
+									<a class='btn btn-warning' href={`/articles/edit/${article.slug}`}>
+										Edit
+									</a>
+								)}
+								{actionManager.canExecute('article.delete') && (
+									<form method='POST' action={`/api/articles/delete/${article.id}`}>
+										<button type='submit' class='btn btn-danger'>
+											Delete
+										</button>
+									</form>
+								)}
+							</div>
+						</div>
+						<Markdown content={article.content} />
+						<div class='man-w-7xl not-prose mt-12'>
+							<CommentList comments={article.comments} />
+							{actionManager.canExecute('comment.create') && <CommentForm articleId={article.id} />}
+						</div>
+					</Fragment>
+				) : (
+					<p>Article not found</p>
+				)
+			}
+		</article>
+	</section>
+
+	<script>
+		import { syntaxHighlighting } from '@lib/mdx/syntax-highlighting'
+		import { tocCreator } from '@lib/mdx/toc-creator'
+		const init = () => {
+			const path = window.location.pathname
+			if (!path.includes('articles') || path.includes('/edit/')) {
+				return
+			}
+			tocCreator()
+			syntaxHighlighting()
+		}
+		init()
+		document.addEventListener('astro:after-swap', init)
+	</script>
+</Layout>

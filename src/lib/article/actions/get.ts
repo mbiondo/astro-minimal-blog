@@ -6,7 +6,9 @@ export const getArticle: ArticleAction = {
   name: 'Get article',
   policies: [],
   exec: async (params: ArticleParams): Promise<LocalArticle> => {
-    if (!params.article.id) throw new Error('Article id is required')
-    return await ArticleRepository.findById(params.article.id)
+    if (!params.article.slug && !params.article.id) throw new Error('Article id or slug is required')
+    return params.article.id
+      ? await ArticleRepository.findById(params.article.id)
+      : await ArticleRepository.findBySlug(params.article.slug as string)
   },
 }

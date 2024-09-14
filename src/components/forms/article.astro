@@ -10,7 +10,25 @@ const { article } = Astro.props
 
 <form class='flex flex-col gap-5 max-w-7xl min-w-full md:pb-10 md:px-10' method='POST'>
 	<label class='input input-bordered flex items-center'>
-		<input type='text' class='grow' name='title' placeholder='Some title...' value={article?.title ?? ''} />
+		<input
+			type='text'
+			class='grow'
+			name='title'
+			placeholder='Some title...'
+			value={article?.title ?? ''}
+			required
+		/>
+	</label>
+	<label class='input input-bordered flex items-center'>
+		<input
+			type='text'
+			class='grow'
+			name='slug'
+			placeholder='Some slug...'
+			value={article?.slug ?? ''}
+			required
+			disabled={article ? true : false}
+		/>
 	</label>
 	<div class='flex items-center flex-col'>
 		<textarea
@@ -23,3 +41,17 @@ const { article } = Astro.props
 
 	<button type='submit' class='btn btn-primary'>{article ? 'Save' : 'Create'}</button>
 </form>
+<script>
+	const init = () => {
+		const form = document.querySelector('form')
+		const title = document.querySelector('input[name="title"]') as HTMLInputElement
+		const slug = document.querySelector('input[name="slug"]') as HTMLInputElement
+		if (!title || !slug) return
+		if (slug.disabled) return
+		title.addEventListener('input', () => {
+			slug.value = title.value.toLowerCase().replace(/\s/g, '-')
+		})
+	}
+	init()
+	document.addEventListener('astro:after-swap', init)
+</script>

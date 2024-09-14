@@ -29,6 +29,7 @@ interface ArticleData {
   id: string
   title: string
   content: string
+  slug: string
   authorId: string
 }
 
@@ -45,6 +46,7 @@ class ArticleAdapter {
       title: data.Article.title,
       content: data.Article.content,
       authorId: data.Article.authorId,
+      slug: data.Article.slug,
       author: {
         id: data.User.id,
         name: data.User.name,

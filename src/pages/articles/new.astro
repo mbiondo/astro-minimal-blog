@@ -17,6 +17,7 @@ if (Astro.request.method === 'POST') {
 	const formData = await Astro.request.clone().formData()
 	const title = formData.get('title') as string
 	const content = formData.get('content') as string
+	const slug = formData.get('slug') as string
 	const authorId = (Astro.locals.user as LocalUser).id
 	const actionManager = Astro.locals.actionManager
 
@@ -33,6 +34,7 @@ if (Astro.request.method === 'POST') {
 			title: title,
 			content: content,
 			authorId: authorId,
+			slug: slug,
 		},
 	})
 

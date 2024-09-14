@@ -27,7 +27,7 @@ actionManager.setContext({ ...actionManager.getContext(), article })
 			place-content-end'>
 			{
 				actionManager.canExecute('article.edit') && (
-					<a class='btn btn-warning' href={`/articles/edit/${article.id}`}>
+					<a class='btn btn-warning' href={`/articles/edit/${article.slug}`}>
 						Edit
 					</a>
 				)
@@ -44,9 +44,8 @@ actionManager.setContext({ ...actionManager.getContext(), article })
 		</div>
 	</div>
 	<div class='max-h-[350px] prose max-w-full overflow-hidden'>
-    <h2>{article.title}</h2>
 		<Markdown content={article.content} />
 	</div>
 
-	<a class='btn btn-primary w-full mt-6' href={`/articles/${article.id}`} data-astro-prefetch>Read more</a>
+	<a class='btn btn-primary w-full mt-6' href={`/articles/${article.slug}`} data-astro-prefetch>Read more</a>
 </article>
