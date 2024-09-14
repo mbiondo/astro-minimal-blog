@@ -27,6 +27,7 @@ export const Article = defineTable({
     id: column.text({ primaryKey: true }),
     title: column.text(),
     content: column.text(),
+    slug: column.text({ unique: true }),
     authorId: column.text({
       references: () => User.columns.id,
     }),

@@ -11,6 +11,27 @@ class ArticleRepository {
     return ArticleAdapter.mapArray(result)
   }
 
+  static async findBySlug(slug: string): Promise<LocalArticle> {
+    const article = await db
+      .select()
+      .from(Article)
+      .innerJoin(User, eq(Article.authorId, User.id))
+      .where(eq(Article.slug, slug))
+      .get()
+
+    if (!article) return { id: '', title: '', content: '', authorId: '', slug: '' }
+
+    const comments = await db
+      .select()
+      .from(Comment)
+      .innerJoin(User, eq(Comment.authorId, User.id))
+      .where(eq(Comment.articleId, article.Article.id))
+
+    return article
+      ? ArticleAdapter.map({ ...article, Comments: comments })
+      : { id: '', title: '', content: '', authorId: '', slug: '' }
+  }
+
   static async findById(id: string): Promise<LocalArticle> {
     const article = await db
       .select()
@@ -26,7 +47,7 @@ class ArticleRepository {
 
     return article
       ? ArticleAdapter.map({ ...article, Comments: comments })
-      : { id: '', title: '', content: '', authorId: '' }
+      : { id: '', title: '', content: '', authorId: '', slug: '' }
   }
 
   static async create(article: LocalArticlePartial): Promise<LocalArticle> {

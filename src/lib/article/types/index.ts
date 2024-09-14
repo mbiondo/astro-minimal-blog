@@ -5,6 +5,7 @@ interface Article {
   id: string
   title: string
   content: string
+  slug: string
   authorId: string
   author?: LocalUser
   editorsId?: string[]

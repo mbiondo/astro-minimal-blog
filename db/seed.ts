@@ -37,6 +37,7 @@ export default async function seed() {
     {
       id: generateId(15),
       authorId: userId,
+      slug: 'welcome-to-astro',
       title: 'Welcome to Astro 🚀',
       content: `
 # Welcome to Astro
