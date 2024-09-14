@@ -43,10 +43,10 @@ actionManager.setContext({ ...actionManager.getContext(), article })
 			}
 		</div>
 	</div>
-	<div class='max-h-[350px] prose max-w-full overflow-hidden'>
-    <h2>{article.title}</h2>
+  <h2 class="text-3xl md:text-5xl text-balance mb-9 mt-0">{article.title}</h2>
+	<div class='max-h-[20rem] prose max-w-full overflow-hidden'>
 		<Markdown content={article.content} />
 	</div>
+  <a class='btn btn-primary w-full mt-6' href={`/articles/${article.id}`} data-astro-prefetch>Read more</a>
 
-	<a class='btn btn-primary w-full mt-6' href={`/articles/${article.id}`} data-astro-prefetch>Read more</a>
 </article>
