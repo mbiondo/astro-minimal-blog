@@ -1,14 +1,12 @@
 const buildMenu = (headings: TocItem[], toc: HTMLElement, drawer: HTMLInputElement | null = null) => {
-  toc.innerHTML = '' // Limpiar el contenido del menú
-
+  toc.innerHTML = ''
   headings.forEach((heading: TocItem) => {
-    // Crear el <li> y <a> para cada item
     const li = document.createElement('li')
     const a = document.createElement('a')
     const headingElement = heading.element
 
-    a.textContent = heading.title // Asignar el texto al enlace
-    headingElement.id = headingElement.textContent?.replace(/\s+/g, '-').toLowerCase() ?? '' // Asignar id
+    a.textContent = heading.title
+    headingElement.id = headingElement.textContent?.replace(/\s+/g, '-').toLowerCase() ?? ''
     a.href = `#${headingElement.id}`
 
     if (heading.children.length > 0) {

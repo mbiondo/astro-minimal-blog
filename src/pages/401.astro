@@ -1,11 +1,10 @@
 ---
 import Layout from '@layout/layout.astro'
-const { formErrors } = Astro.locals
 ---
 
 <Layout showNav={false}>
 	<section class='prose prose-lg max-w-7xl flex flex-col gap-5'>
 		<h1>401</h1>
-		<p>{formErrors?.application ?? 'Unauthorized'}</p>
+		<p>{'Unauthorized'}</p>
 	</section>
 </Layout>
