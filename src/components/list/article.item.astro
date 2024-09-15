@@ -20,6 +20,7 @@ actionManager.setContext({ ...actionManager.getContext(), article })
 			avatar={article.author?.avatar ?? 'https://cdn.jsdelivr.net/gh/alohe/memojis/png/vibrent_7.png'}
 			name={article.author?.name ?? 'Unknown'}
 			email={article.author?.email ?? 'Unknown'}
+			updatedAt={article.updatedAt}
 		/>
 		<div class='flex
 			flex-row

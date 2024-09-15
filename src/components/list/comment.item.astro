@@ -19,6 +19,7 @@ actionManager.setContext({ ...actionManager.getContext(), comment })
 			avatar={comment.author?.avatar ?? 'https://cdn.jsdelivr.net/gh/alohe/memojis/png/vibrent_7.png'}
 			name={comment.author?.name ?? 'Unknown'}
 			email={comment.author?.email ?? 'Unknown'}
+			updatedAt={comment.updatedAt}
 		/>
 		<div class='flex flex-row gap-5'>
 			{

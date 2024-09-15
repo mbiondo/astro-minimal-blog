@@ -63,6 +63,7 @@ if (Astro.request.method === 'POST') {
 								}
 								name={article.author?.name ?? 'Unknown'}
 								email={article.author?.email ?? 'Unknown'}
+								updatedAt={article.updatedAt}
 							/>
 							<div class='flex flex-row gap-5 place-content-end'>
 								{actionManager.canExecute(ArticleActionsType.Update) && (
