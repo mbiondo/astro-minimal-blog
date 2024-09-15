@@ -1,6 +1,7 @@
 ---
 import ArticleForm from '@components/forms/article.astro'
 import Layout from '@layout/layout.astro'
+import { ArticleActionsType } from '@lib/article/types'
 import type { LocalUser } from '@lib/core/types'
 
 const { actionManager, session } = Astro.locals
@@ -9,7 +10,7 @@ if (!session) {
 	return Astro.redirect('/auth/login')
 }
 
-if (!actionManager.canExecute('article.create')) {
+if (!actionManager.canExecute(ArticleActionsType.Create)) {
 	return Astro.redirect('/401')
 }
 
@@ -25,11 +26,11 @@ if (Astro.request.method === 'POST') {
 		return Astro.redirect('/401')
 	}
 
-	if (!actionManager.canExecute('article.create')) {
+	if (!actionManager.canExecute(ArticleActionsType.Create)) {
 		return Astro.redirect('/401')
 	}
 
-	const result = await actionManager.execute('article.create', {
+	const result = await actionManager.execute(ArticleActionsType.Create, {
 		article: {
 			title: title,
 			content: content,

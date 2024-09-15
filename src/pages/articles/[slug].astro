@@ -1,7 +1,7 @@
 ---
 import Avatar from '@components/avatar/avatar.astro'
 import Layout from '@layout/layout.astro'
-import type { Article } from '@lib/article/types'
+import { ArticleActionsType, type Article } from '@lib/article/types'
 import { Markdown } from 'astro-remote'
 import CommentForm from '@components/forms/comment.astro'
 import CommentList from '@components/list/comment.astro'
@@ -11,7 +11,7 @@ const { slug } = Astro.params
 
 const actionManager = Astro.locals.actionManager
 
-let article: Article = await actionManager.execute('article.get', { article: { slug } })
+let article: Article = await actionManager.execute(ArticleActionsType.Read, { article: { slug } })
 
 actionManager.setContext({ ...actionManager.getContext(), article })
 
@@ -30,11 +30,11 @@ if (Astro.request.method === 'POST') {
 		return Astro.rewrite('/articles/new')
 	}
 
-	if (!actionManager.canExecute('comment.create')) {
+	if (!actionManager.canExecute(ArticleActionsType.Comment)) {
 		return Astro.redirect('/401')
 	}
 
-	await actionManager.execute('comment.create', {
+	await actionManager.execute(ArticleActionsType.Comment, {
 		comment: {
 			content: content,
 			authorId: authorId,
@@ -42,7 +42,7 @@ if (Astro.request.method === 'POST') {
 		},
 	})
 
-	article = await actionManager.execute('article.get', { article: { slug } })
+	article = await actionManager.execute(ArticleActionsType.Read, { article: { slug } })
 }
 ---
 
@@ -65,12 +65,12 @@ if (Astro.request.method === 'POST') {
 								email={article.author?.email ?? 'Unknown'}
 							/>
 							<div class='flex flex-row gap-5 place-content-end'>
-								{actionManager.canExecute('article.edit') && (
+								{actionManager.canExecute(ArticleActionsType.Update) && (
 									<a class='btn btn-warning' href={`/articles/edit/${article.slug}`}>
 										Edit
 									</a>
 								)}
-								{actionManager.canExecute('article.delete') && (
+								{actionManager.canExecute(ArticleActionsType.Delete) && (
 									<form method='POST' action={`/api/articles/delete/${article.id}`}>
 										<button type='submit' class='btn btn-danger'>
 											Delete
@@ -82,7 +82,9 @@ if (Astro.request.method === 'POST') {
 						<Markdown content={article.content} />
 						<div class='man-w-7xl not-prose mt-12'>
 							<CommentList comments={article.comments} />
-							{actionManager.canExecute('comment.create') && <CommentForm articleId={article.id} />}
+							{actionManager.canExecute(ArticleActionsType.Comment) && (
+								<CommentForm articleId={article.id} />
+							)}
 						</div>
 					</Fragment>
 				) : (

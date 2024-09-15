@@ -1,10 +1,10 @@
-import type { Article as LocalArticle, ArticleAction, ArticleParams } from '../types'
+import { type Article as LocalArticle, type ArticleAction, type ArticleParams, ArticleActionsType } from '../types'
 
 import CanEditPolicy from '@lib/article/policies/canEdit'
 import ArticleRepository from '@lib/article/repository'
 
 export const editArticle: ArticleAction = {
-  id: 'article.edit',
+  id: ArticleActionsType.Update,
   name: 'Edit article',
   policies: CanEditPolicy,
   exec: async (params: ArticleParams): Promise<LocalArticle> => {

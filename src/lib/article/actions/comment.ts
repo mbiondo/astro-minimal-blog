@@ -1,10 +1,10 @@
-import type { ArticleAction, ArticleParams, Comment } from '../types'
+import { ArticleActionsType, type ArticleAction, type ArticleParams, type Comment } from '../types'
 import ArticleRepository from '../repository'
 
 import CanComment from '../policies/canComment'
 
 export const createComment: ArticleAction = {
-  id: 'comment.create',
+  id: ArticleActionsType.Comment,
   name: 'Create article',
   policies: CanComment,
   exec: async (params: ArticleParams): Promise<Comment> => {

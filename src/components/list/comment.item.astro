@@ -1,5 +1,5 @@
 ---
-import type { Comment } from '@lib/article/types'
+import { ArticleActionsType, type Comment } from '@lib/article/types'
 import { Markdown } from 'astro-remote'
 import Avatar from '@components/avatar/avatar.astro'
 
@@ -22,7 +22,7 @@ actionManager.setContext({ ...actionManager.getContext(), comment })
 		/>
 		<div class='flex flex-row gap-5'>
 			{
-				actionManager.canExecute('comment.delete') && (
+				actionManager.canExecute(ArticleActionsType.DeleteComment) && (
 					<form method='POST' action={`/api/comments/delete/${comment.id}`}>
 						<button type='submit' class='btn btn-danger'>
 							Delete

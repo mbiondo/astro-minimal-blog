@@ -1,6 +1,6 @@
 ---
 import Layout from '@layout/layout.astro'
-import type { Article } from '@lib/article/types'
+import { ArticleActionsType, type Article } from '@lib/article/types'
 import ArticleForm from '@components/forms/article.astro'
 
 const { slug } = Astro.params
@@ -18,11 +18,11 @@ if (Astro.request.method === 'POST') {
 	const content = formData.get('content')
 	const actionManager = Astro.locals.actionManager
 
-	const article: Article = await actionManager.execute('article.get', { article: { slug } })
+	const article: Article = await actionManager.execute(ArticleActionsType.Read, { article: { slug } })
 
 	actionManager.setContext({ ...actionManager.getContext(), article })
 
-	await actionManager.execute('article.edit', {
+	await actionManager.execute(ArticleActionsType.Update, {
 		article: {
 			id: article.id,
 			title: title as string,
@@ -33,7 +33,7 @@ if (Astro.request.method === 'POST') {
 	return Astro.redirect(`/articles/${slug}`)
 }
 
-const article: Article = await actionManager.execute('article.get', { article: { slug } })
+const article: Article = await actionManager.execute(ArticleActionsType.Read, { article: { slug } })
 ---
 
 <Layout title={article.title}>

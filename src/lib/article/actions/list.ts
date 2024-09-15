@@ -1,8 +1,8 @@
 import ArticleRepository from '../repository'
-import type { Article as LocalArticle, ArticleAction } from '../types'
+import { type Article as LocalArticle, type ArticleAction, ArticleActionsType } from '../types'
 
 export const listArticle: ArticleAction = {
-  id: 'article.list',
+  id: ArticleActionsType.List,
   name: 'Create article',
   policies: [],
   exec: async (): Promise<LocalArticle[]> => {

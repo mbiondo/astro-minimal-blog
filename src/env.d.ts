@@ -5,7 +5,6 @@ declare namespace App {
     session: import('lucia').Session | null
     user: Omit<import('astro:db').User, 'hashed_password'> | null
     actionManager: import('@mbiondo/actions-manager').ActionManager
-    formErrors: Record<string, string> | null
-    formValues: Record<string, string> | null
+    theme: 'light' | 'dracula'
   }
 }

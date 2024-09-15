@@ -32,8 +32,22 @@ interface ArticleParams extends IActionParam {
   comment: Partial<Comment>
 }
 
+enum ArticleActionsType {
+  Create = 'article.create',
+  Update = 'article.update',
+  Delete = 'article.delete',
+  List = 'article.list',
+  Read = 'article.read',
+  Comment = 'article.comment',
+  DeleteComment = 'article.deleteComment',
+  ReadComment = 'article.readComment',
+  ListComments = 'article.listComments',
+}
+
 type ArticleAction = IAction<ArticleContext, ArticleParams>
 
 type ArticlePolicy = IPolicy<ArticleContext>
+
+export { ArticleActionsType }
 
 export type { Article, ArticleContext, ArticleParams, ArticleAction, ArticlePolicy, Comment }

@@ -1,8 +1,8 @@
 import ArticleRepository from '@lib/article/repository'
-import type { Comment, ArticleAction, ArticleParams } from '@lib/article/types'
+import { type Comment, type ArticleAction, type ArticleParams, ArticleActionsType } from '@lib/article/types'
 
 export const getComment: ArticleAction = {
-  id: 'comment.get',
+  id: ArticleActionsType.ListComments,
   name: 'Get article',
   policies: [],
   exec: async (params: ArticleParams): Promise<Comment> => {

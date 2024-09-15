@@ -1,11 +1,11 @@
 ---
 import Layout from '@layout/layout.astro'
 import ArticleList from '@components/list/article.astro'
-import type { Article } from '@lib/article/types'
+import { ArticleActionsType, type Article } from '@lib/article/types'
 
 const actionManager = Astro.locals.actionManager
 
-const articles: Article[] = await actionManager.execute('article.list', {})
+const articles: Article[] = await actionManager.execute(ArticleActionsType.List, {})
 ---
 
 <Layout title='Astro minimal blog'>

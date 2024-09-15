@@ -1,4 +1,4 @@
-import type { Article } from '@lib/article/types'
+import { ArticleActionsType, type Article } from '@lib/article/types'
 import type { APIContext } from 'astro'
 
 export async function POST(context: APIContext): Promise<Response> {
@@ -18,11 +18,11 @@ export async function POST(context: APIContext): Promise<Response> {
     })
   }
 
-  const article: Article = await actionManager.execute('article.get', { article: { id } })
+  const article: Article = await actionManager.execute(ArticleActionsType.Read, { article: { id } })
 
   actionManager.setContext({ ...actionManager.getContext(), article })
 
-  actionManager.execute('article.delete', { article: { id } })
+  actionManager.execute(ArticleActionsType.Delete, { article: { id } })
 
   return context.redirect(`/`)
 }
