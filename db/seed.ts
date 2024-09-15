@@ -39,6 +39,8 @@ export default async function seed() {
       authorId: userId,
       slug: 'welcome-to-astro',
       title: 'Welcome to Astro 🚀',
+      createdAt: new Date(),
+      updatedAt: new Date(),
       content: `
 # Welcome to Astro 🚀
 This is a sample article to help you get started with Astro.

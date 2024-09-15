@@ -11,6 +11,8 @@ interface Article {
   editorsId?: string[]
   editors?: LocalUser[]
   comments?: Comment[]
+  updatedAt: Date
+  createdAt: Date
 }
 
 interface Comment {
@@ -19,6 +21,8 @@ interface Comment {
   content: string
   authorId: string
   author?: LocalUser
+  updatedAt: Date
+  createdAt: Date
 }
 
 interface ArticleContext extends IContext {

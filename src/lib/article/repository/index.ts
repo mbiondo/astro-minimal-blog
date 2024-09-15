@@ -3,7 +3,7 @@ import { generateId } from 'lucia'
 import { db, Article, User, eq, Comment } from 'astro:db'
 import ArticleAdapter from '../adapters/article'
 
-type LocalArticlePartial = Omit<LocalArticle, 'id'>
+type LocalArticlePartial = Omit<LocalArticle, 'id' | 'updatedAt' | 'createdAt'>
 
 class ArticleRepository {
   static async findAll(): Promise<LocalArticle[]> {
@@ -19,7 +19,8 @@ class ArticleRepository {
       .where(eq(Article.slug, slug))
       .get()
 
-    if (!article) return { id: '', title: '', content: '', authorId: '', slug: '' }
+    if (!article)
+      return { id: '', title: '', content: '', authorId: '', slug: '', updatedAt: new Date(), createdAt: new Date() }
 
     const comments = await db
       .select()
@@ -29,7 +30,7 @@ class ArticleRepository {
 
     return article
       ? ArticleAdapter.map({ ...article, Comments: comments })
-      : { id: '', title: '', content: '', authorId: '', slug: '' }
+      : { id: '', title: '', content: '', authorId: '', slug: '', updatedAt: new Date(), createdAt: new Date() }
   }
 
   static async findById(id: string): Promise<LocalArticle> {
@@ -47,25 +48,28 @@ class ArticleRepository {
 
     return article
       ? ArticleAdapter.map({ ...article, Comments: comments })
-      : { id: '', title: '', content: '', authorId: '', slug: '' }
+      : { id: '', title: '', content: '', authorId: '', slug: '', updatedAt: new Date(), createdAt: new Date() }
   }
 
   static async create(article: LocalArticlePartial): Promise<LocalArticle> {
     try {
       const id = generateId(15)
-      await db.insert(Article).values({ id, ...article })
-      return { id, ...article }
+      const createdAt = new Date()
+      const updatedAt = new Date()
+      await db.insert(Article).values({ id, ...article, createdAt, updatedAt })
+      return { id, ...article, createdAt, updatedAt }
     } catch (error) {
       throw new Error('Failed to create article')
     }
   }
 
-  static async update(article: LocalArticle): Promise<LocalArticle> {
+  static async update(article: LocalArticlePartial & { id: string }): Promise<LocalArticle> {
     const updatedArticle: LocalArticle[] = await db
       .update(Article)
       .set({
         title: article.title,
         content: article.content,
+        updatedAt: new Date(),
       })
       .where(eq(Article.id, article.id))
       .returning()
@@ -85,7 +89,9 @@ class ArticleRepository {
       .where(eq(Comment.id, id))
       .get()
 
-    return comment ? ArticleAdapter.mapComment(comment) : { id: '', articleId: '', authorId: '', content: '' }
+    return comment
+      ? ArticleAdapter.mapComment(comment)
+      : { id: '', articleId: '', authorId: '', content: '', updatedAt: new Date(), createdAt: new Date() }
   }
 
   static async deleteComment(id: string): Promise<boolean> {
@@ -93,12 +99,14 @@ class ArticleRepository {
     return true
   }
 
-  static async createComment(comment: Omit<LocalComment, 'id'>): Promise<LocalComment> {
+  static async createComment(comment: Omit<LocalComment, 'id' | 'updatedAt' | 'createdAt'>): Promise<LocalComment> {
     const commentCreated: LocalComment = {
       id: generateId(15),
       articleId: comment.articleId,
       authorId: comment.authorId,
       content: comment.content,
+      updatedAt: new Date(),
+      createdAt: new Date(),
     }
     await db.insert(Comment).values(commentCreated)
     return commentCreated

@@ -31,6 +31,8 @@ export const Article = defineTable({
     authorId: column.text({
       references: () => User.columns.id,
     }),
+    createdAt: column.date(),
+    updatedAt: column.date(),
   },
 })
 
@@ -55,6 +57,8 @@ export const Comment = defineTable({
       references: () => User.columns.id,
     }),
     content: column.text(),
+    createdAt: column.date(),
+    updatedAt: column.date(),
   },
 })
 

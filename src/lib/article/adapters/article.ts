@@ -6,6 +6,8 @@ interface CommentData {
     articleId: string
     content: string
     authorId: string
+    updatedAt: Date
+    createdAt: Date
   }
   User: {
     id: string
@@ -31,6 +33,8 @@ interface ArticleData {
   content: string
   slug: string
   authorId: string
+  updatedAt: Date
+  createdAt: Date
 }
 
 interface ArticleMapperData {
@@ -47,6 +51,8 @@ class ArticleAdapter {
       content: data.Article.content,
       authorId: data.Article.authorId,
       slug: data.Article.slug,
+      updatedAt: data.Article.updatedAt,
+      createdAt: data.Article.createdAt,
       author: {
         id: data.User.id,
         name: data.User.name,
@@ -69,6 +75,8 @@ class ArticleAdapter {
       articleId: data.Comment.articleId,
       content: data.Comment.content,
       authorId: data.Comment.authorId,
+      updatedAt: data.Comment.updatedAt,
+      createdAt: data.Comment.createdAt,
       author: {
         id: data.User.id,
         name: data.User.name,
