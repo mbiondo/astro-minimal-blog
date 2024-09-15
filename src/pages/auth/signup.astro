@@ -1,9 +1,7 @@
 ---
 import Layout from '@layout/layout.astro'
 import { lucia } from '@lib/auth/auth'
-import { db, eq, User } from 'astro:db'
-import { generateId } from 'lucia'
-import { Argon2id } from 'node_modules/oslo/dist/password/argon2id'
+import { Signup as SignupFn } from '@lib/auth/signup'
 
 const formErrors: Record<string, string> = {}
 const formValues: Record<string, string> = {}
@@ -30,25 +28,20 @@ if (Astro.request.method === 'POST') {
 		formErrors.name = 'Invalid name'
 	}
 
-	const userId = generateId(15)
-	const hashedPassword = await new Argon2id().hash(password)
-
-	const existingUser = await db.select().from(User).where(eq(User.email, email.toLowerCase())).get()
-
-	if (existingUser) {
-		formErrors.email = 'Email already in use'
+	if (Object.keys(formErrors).length > 0) {
+		return
 	}
-	if (!existingUser && Object.keys(formErrors).length === 0) {
-		await db.insert(User).values({
-			id: userId,
-			email: email.toLowerCase(),
-			confirmed: false,
-			name: name,
-			role: 'user',
-			avatar: avatar,
-			hashed_password: hashedPassword,
-		})
 
+	const userId = await SignupFn({
+		email,
+		password,
+		name,
+		avatar,
+	})
+
+	if (!userId) {
+		formErrors.email = 'Email already exists'
+	} else {
 		const session = await lucia.createSession(userId, {})
 		const sessionCookie = lucia.createSessionCookie(session.id)
 
