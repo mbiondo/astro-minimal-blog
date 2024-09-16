@@ -18,7 +18,7 @@ export async function POST(context: APIContext): Promise<Response> {
     })
   }
 
-  const comment: Comment = await actionManager.execute(ArticleActionsType.Read, { comment: { id } })
+  const comment: Comment = await actionManager.execute(ArticleActionsType.ReadComment, { comment: { id } })
 
   actionManager.setContext({ ...actionManager.getContext(), comment })
 
