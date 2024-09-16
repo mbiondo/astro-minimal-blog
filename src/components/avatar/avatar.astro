@@ -18,6 +18,6 @@ const { name, email, avatar, updatedAt } = Astro.props
 	<div>
 		<div class='font-bold'>{name}</div>
 		<div class='text-sm'>{email}</div>
-		<time class='text-xs text-gray-500' datetime={updatedAt.toLocaleString()}>{updatedAt.toLocaleString()}</time>
+		<time class='text-xs text-gray-500' datetime={updatedAt.toUTCString()}>{updatedAt.toUTCString()}</time>
 	</div>
 </div>
