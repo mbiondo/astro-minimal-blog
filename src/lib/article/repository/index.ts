@@ -80,6 +80,15 @@ class ArticleRepository {
     await db.delete(Article).where(eq(Article.id, id))
     return true
   }
+  static async findCommentsByArticleId(articleId: string): Promise<LocalComment[]> {
+    const comments = await db
+      .select()
+      .from(Comment)
+      .innerJoin(User, eq(Comment.authorId, User.id))
+      .where(eq(Comment.articleId, articleId))
+
+    return comments ? ArticleAdapter.mapComments(comments) : []
+  }
 
   static async findCommentById(id: string): Promise<LocalComment> {
     const comment = await db

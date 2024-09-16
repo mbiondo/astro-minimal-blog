@@ -68,6 +68,9 @@ class ArticleAdapter {
   static mapArray(data: ArticleMapperData[]): Article[] {
     return data.map((item) => this.map(item))
   }
+  static mapComments(data: CommentData[]): Comment[] {
+    return data.map((item) => this.mapComment(item))
+  }
 
   static mapComment(data: CommentData): Comment {
     return {

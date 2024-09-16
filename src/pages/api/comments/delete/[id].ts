@@ -1,4 +1,5 @@
-import { ArticleActionsType, type Comment } from '@lib/article/types'
+import { ArticleActionsType } from '@lib/article/types'
+import type { Article, Comment } from '@lib/article/types'
 import type { APIContext } from 'astro'
 
 export async function POST(context: APIContext): Promise<Response> {
@@ -19,10 +20,13 @@ export async function POST(context: APIContext): Promise<Response> {
   }
 
   const comment: Comment = await actionManager.execute(ArticleActionsType.ReadComment, { comment: { id } })
+  const article = await actionManager.execute<Article>(ArticleActionsType.Read, { article: { id: comment.articleId } })
+
+  if (!article) return new Response(null, { status: 404 })
 
   actionManager.setContext({ ...actionManager.getContext(), comment })
 
   actionManager.execute(ArticleActionsType.DeleteComment, { comment: { id } })
 
-  return context.redirect(`/`)
+  return context.redirect(`/articles/${article.slug}`)
 }
