@@ -11,9 +11,10 @@ const { comment } = Astro.props
 
 const actionManager = Astro.locals.actionManager
 actionManager.setContext({ ...actionManager.getContext(), comment })
+const canDelete = await actionManager.canExecute(ArticleActionsType.DeleteComment)
 ---
 
-<article class='prose max-w-7xl flex flex-col'>
+<article class='prose max-w-full xl:max-w-4xl w-full p-5'>
 	<div class='flex place-content-between'>
 		<Avatar
 			avatar={comment.author?.avatar ?? 'https://cdn.jsdelivr.net/gh/alohe/memojis/png/vibrent_7.png'}
@@ -23,7 +24,7 @@ actionManager.setContext({ ...actionManager.getContext(), comment })
 		/>
 		<div class='flex flex-row gap-5'>
 			{
-				actionManager.canExecute(ArticleActionsType.DeleteComment) && (
+				canDelete && (
 					<form method='POST' action={`/api/comments/delete/${comment.id}`}>
 						<button type='submit' class='btn btn-danger'>
 							Delete

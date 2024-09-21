@@ -1,6 +1,6 @@
-import ArticleRepository from '@lib/article/repository'
 import { ArticleActionsType, type ArticleAction, type ArticleParams } from '@lib/article/types'
 import CantDelete from '../policies/canDelete'
+import CommentService from '../adapters/comment'
 
 export const deleteComment: ArticleAction = {
   id: ArticleActionsType.DeleteComment,
@@ -8,6 +8,7 @@ export const deleteComment: ArticleAction = {
   policies: CantDelete,
   exec: async (params: ArticleParams): Promise<boolean> => {
     if (!params.comment.id) throw new Error('Comment id is required')
-    return await ArticleRepository.deleteComment(params.comment.id)
+    const service = CommentService.getInstance()
+    return await service.delete(params.comment.id)
   },
 }

@@ -1,21 +1,23 @@
-import { createArticle } from '@lib/article/actions/create'
-import { listArticle } from '@lib/article/actions/list'
-import { getArticle } from '@lib/article/actions/get'
-import { editArticle } from '@lib/article/actions/edit'
-import { deleteArticle } from '@lib/article/actions/delete'
-import { createComment } from './actions/comment'
+import { CreateArticle } from '@lib/article/actions/create'
+import { ListArticles } from '@lib/article/actions/list'
+import { ViewArticle } from '@lib/article/actions/view'
+import { EditArticle } from '@lib/article/actions/edit'
+import { DeleteArticle } from '@lib/article/actions/delete'
+import { CreateComment } from './actions/createComment'
 import { deleteComment } from './actions/deleteComment'
-import { getComment } from './actions/getComment'
+import { ViewComment } from './actions/viewComment'
+import { ListComments } from './actions/listComments'
 
 const ArticleActions = [
-  createArticle,
-  listArticle,
-  getArticle,
-  editArticle,
-  deleteArticle,
-  getComment,
-  createComment,
+  CreateArticle,
+  ListArticles,
+  ViewArticle,
+  EditArticle,
+  DeleteArticle,
+  ViewComment,
+  CreateComment,
   deleteComment,
+  ListComments,
 ]
 
 export default ArticleActions

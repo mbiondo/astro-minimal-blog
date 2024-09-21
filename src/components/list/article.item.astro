@@ -12,6 +12,8 @@ const { article } = Astro.props
 const actionManager = Astro.locals.actionManager
 
 actionManager.setContext({ ...actionManager.getContext(), article })
+const canEdit = await actionManager.canExecute(ArticleActionsType.Update)
+const canDelete = await actionManager.canExecute(ArticleActionsType.Delete)
 ---
 
 <article class='prose max-w-4xl mx-auto p-5'>
@@ -27,14 +29,14 @@ actionManager.setContext({ ...actionManager.getContext(), article })
 			gap-5
 			place-content-end'>
 			{
-				actionManager.canExecute(ArticleActionsType.Update) && (
+				canEdit && (
 					<a class='btn btn-warning' href={`/articles/edit/${article.slug}`}>
 						Edit
 					</a>
 				)
 			}
 			{
-				actionManager.canExecute(ArticleActionsType.Delete) && (
+				canDelete && (
 					<form method='POST' action={`/api/articles/delete/${article.id}`}>
 						<button type='submit' class='btn btn-danger'>
 							Delete

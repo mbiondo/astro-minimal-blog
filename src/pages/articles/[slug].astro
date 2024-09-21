@@ -1,7 +1,8 @@
 ---
 import Avatar from '@components/avatar/avatar.astro'
 import Layout from '@layout/layout.astro'
-import { ArticleActionsType, type Article } from '@lib/article/types'
+import type { Comment, Article } from '@lib/article/types'
+import { ArticleActionsType } from '@lib/article/types'
 import { Markdown } from 'astro-remote'
 import CommentForm from '@components/forms/comment.astro'
 import CommentList from '@components/list/comment.astro'
@@ -29,8 +30,8 @@ if (Astro.request.method === 'POST') {
 	if (!actionManager) {
 		return Astro.rewrite('/articles/new')
 	}
-
-	if (!actionManager.canExecute(ArticleActionsType.Comment)) {
+	const canExecute = actionManager.canExecute(ArticleActionsType.Comment)
+	if (!canExecute) {
 		return Astro.redirect('/401')
 	}
 
@@ -44,6 +45,12 @@ if (Astro.request.method === 'POST') {
 
 	article = await actionManager.execute(ArticleActionsType.Read, { article: { slug } })
 }
+
+const comments = await actionManager.execute<Comment[]>(ArticleActionsType.ListComments, { article })
+
+const canEdit = await actionManager.canExecute(ArticleActionsType.Update)
+const canDelete = await actionManager.canExecute(ArticleActionsType.Delete)
+const canComment = await actionManager.canExecute(ArticleActionsType.Comment)
 ---
 
 <Layout title={article.title}>
@@ -66,12 +73,12 @@ if (Astro.request.method === 'POST') {
 								updatedAt={article.updatedAt}
 							/>
 							<div class='flex flex-row gap-5 place-content-end'>
-								{actionManager.canExecute(ArticleActionsType.Update) && (
+								{canEdit && (
 									<a class='btn btn-warning' href={`/articles/edit/${article.slug}`}>
 										Edit
 									</a>
 								)}
-								{actionManager.canExecute(ArticleActionsType.Delete) && (
+								{canDelete && (
 									<form method='POST' action={`/api/articles/delete/${article.id}`}>
 										<button type='submit' class='btn btn-danger'>
 											Delete
@@ -81,11 +88,10 @@ if (Astro.request.method === 'POST') {
 							</div>
 						</div>
 						<Markdown content={article.content} />
-						<div class='man-w-7xl not-prose mt-12'>
-							<CommentList comments={article.comments} />
-							{actionManager.canExecute(ArticleActionsType.Comment) && (
-								<CommentForm articleId={article.id} />
-							)}
+						<div class='man-w-7xl mt-12'>
+							{comments && <CommentList comments={comments} />}
+
+							{canComment && <CommentForm articleId={article.id} />}
 						</div>
 					</Fragment>
 				) : (

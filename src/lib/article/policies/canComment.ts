@@ -1,7 +1,7 @@
 import type { ArticlePolicy } from '@lib/article/types'
 
 const CanComment: ArticlePolicy = {
-  test: (ctx) => {
+  test: async (ctx): Promise<boolean> => {
     if (!ctx.user) return false
 
     return ctx.user.confirmed

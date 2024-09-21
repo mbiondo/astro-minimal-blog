@@ -3,6 +3,7 @@ import { ArticleActionsType } from '@lib/article/types'
 
 const user = Astro.locals.user
 const actionManager = Astro.locals.actionManager
+const canCreate = await actionManager.canExecute(ArticleActionsType.Create)
 ---
 
 <div class='navbar mb-10 w-full xl:max-w-7xl place-self-center'>
@@ -29,7 +30,7 @@ const actionManager = Astro.locals.actionManager
 		{
 			user ? (
 				<div class='flex items-center gap-2'>
-					{actionManager.canExecute(ArticleActionsType.Create) && (
+					{canCreate && (
 						<a href='/articles/new' class='btn btn-sm btn-ghost'>
 							Create article
 						</a>

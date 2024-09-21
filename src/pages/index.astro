@@ -4,6 +4,7 @@ import ArticleList from '@components/list/article.astro'
 import { ArticleActionsType, type Article } from '@lib/article/types'
 
 const actionManager = Astro.locals.actionManager
+const user = Astro.locals.user
 
 const articles: Article[] = await actionManager.execute(ArticleActionsType.List, {})
 ---

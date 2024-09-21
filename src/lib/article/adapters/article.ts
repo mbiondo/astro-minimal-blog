@@ -1,95 +1,72 @@
-import type { Article, Comment } from '@lib/article/types'
+import type { Article } from '@lib/article/types'
+import type { IService } from '@lib/core/interfaces/service'
 
-interface CommentData {
-  Comment: {
-    id: string
-    articleId: string
-    content: string
-    authorId: string
-    updatedAt: Date
-    createdAt: Date
+import ArticleRepository from '../repositories/article'
+import ArticleMapper from '../mappers/article'
+import type { ArticleInput } from '../repositories/types'
+
+class ArticleService implements IService<ArticleInput, Article> {
+  private static instance: ArticleService
+
+  repository: ArticleRepository
+  mapper: ArticleMapper
+
+  private constructor() {
+    this.repository = new ArticleRepository()
+    this.mapper = new ArticleMapper()
   }
-  User: {
-    id: string
-    name: string
-    email: string
-    role: string
-    confirmed: boolean
-    avatar?: string
-  }
-}
 
-interface UserData {
-  id: string
-  name: string
-  email: string
-  role: string
-  confirmed: boolean
-  avatar?: string
-}
-interface ArticleData {
-  id: string
-  title: string
-  content: string
-  slug: string
-  authorId: string
-  updatedAt: Date
-  createdAt: Date
-}
-
-interface ArticleMapperData {
-  Article: ArticleData
-  User: UserData
-  Comments?: CommentData[]
-}
-
-class ArticleAdapter {
-  static map(data: ArticleMapperData): Article {
-    return {
-      id: data.Article.id,
-      title: data.Article.title,
-      content: data.Article.content,
-      authorId: data.Article.authorId,
-      slug: data.Article.slug,
-      updatedAt: data.Article.updatedAt,
-      createdAt: data.Article.createdAt,
-      author: {
-        id: data.User.id,
-        name: data.User.name,
-        email: data.User.email,
-        role: data.User.role,
-        confirmed: data.User.confirmed,
-        avatar: data.User.avatar,
-      },
-      comments: data.Comments?.map((comment) => this.mapComment(comment)),
+  static getInstance() {
+    if (!ArticleService.instance) {
+      ArticleService.instance = new ArticleService()
     }
+    return ArticleService.instance
   }
 
-  static mapArray(data: ArticleMapperData[]): Article[] {
-    return data.map((item) => this.map(item))
-  }
-  static mapComments(data: CommentData[]): Comment[] {
-    return data.map((item) => this.mapComment(item))
+  async create(article: ArticleInput): Promise<Article> {
+    const { data, error } = await this.repository.create(article)
+    if (error) throw new Error(error)
+    if (!data) throw new Error('Could not create article')
+    if (Array.isArray(data)) throw new Error('Data is an array')
+    return this.mapper.map(data)
   }
 
-  static mapComment(data: CommentData): Comment {
-    return {
-      id: data.Comment.id,
-      articleId: data.Comment.articleId,
-      content: data.Comment.content,
-      authorId: data.Comment.authorId,
-      updatedAt: data.Comment.updatedAt,
-      createdAt: data.Comment.createdAt,
-      author: {
-        id: data.User.id,
-        name: data.User.name,
-        email: data.User.email,
-        role: data.User.role,
-        confirmed: data.User.confirmed,
-        avatar: data.User.avatar,
-      },
-    }
+  async update(id: string, data: ArticleInput): Promise<any> {
+    return this.repository.update(id, data)
+  }
+
+  async delete(id: string): Promise<boolean> {
+    const result = await this.repository.delete(id)
+    return result
+  }
+
+  async find(id: string): Promise<Article> {
+    const { data, error } = await this.repository.find(id)
+    if (error) throw new Error(error)
+    if (!data) throw new Error('Could not find article')
+    if (Array.isArray(data)) throw new Error('Data is an array')
+    return this.mapper.map(data)
+  }
+
+  async findAll(): Promise<Article[]> {
+    const { data, error } = await this.repository.findAll()
+    if (error) throw new Error(error)
+    if (!data) throw new Error('Could not find articles')
+    if (!Array.isArray(data)) throw new Error('Data is not an array')
+    return this.mapper.mapArray(data)
+  }
+
+  async findBySlug(slug: string): Promise<Article> {
+    const { data, error } = await this.repository.findBySlug(slug)
+    if (error) throw new Error(error)
+    if (!data) throw new Error('Could not find article')
+    if (Array.isArray(data)) throw new Error('Data is an array')
+    return this.mapper.map(data)
+  }
+
+  async findByCriteria(criteria: any): Promise<Article[]> {
+    throw new Error('Method not implemented.')
   }
 }
 
-export default ArticleAdapter
+export default ArticleService
