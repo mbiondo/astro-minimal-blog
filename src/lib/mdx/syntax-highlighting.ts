@@ -29,6 +29,7 @@ const highlighter = await createHighlighter({
     'yaml',
     'markdown',
     'plaintext',
+    'mermaid',
   ],
 })
 
